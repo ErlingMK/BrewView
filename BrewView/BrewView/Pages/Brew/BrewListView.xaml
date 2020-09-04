@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:brew="clr-namespace:BrewView.Pages.Brew;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.Brew.BrewListView"
+             x:DataType="{x:Type brew:IBrewPageViewModel}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               Text="Dine greier"
+               FontSize="20"
+               Margin="10,10" />
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding MyBrews}"
+                            ItemSizingStrategy="MeasureAllItems"
+                            BackgroundColor="White"
+                            ItemTemplate="{StaticResource BrewListItem}">
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="0,100,0,0">
+                        <Label Text="&#x2639;"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="40" />
+
+                        <Label Text="Ingenting her! Legg til noe"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontSize="20" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentView>

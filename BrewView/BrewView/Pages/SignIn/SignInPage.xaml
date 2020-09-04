@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:signIn="clr-namespace:BrewView.Pages.SignIn;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.SignIn.SignInPage"
+             x:DataType="{x:Type signIn:ISignInViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <signIn:RegistrationView x:Name="RegistrationView"
+                                 Grid.RowSpan="2"
+                                 RegistrationCancelled="OnRegistrationCancelled"
+                                 Opacity="0" />
+        <signIn:CredentialsView x:Name="CredentialsView"
+                                Grid.RowSpan="2"
+                                RegistrationSelected="OnRegisterTapped" />
+
+        <ActivityIndicator Grid.Row="1"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Center"
+                           IsRunning="True"
+                           IsVisible="{Binding IsBusy}" />
+
+    </Grid>
+
+</ContentPage>

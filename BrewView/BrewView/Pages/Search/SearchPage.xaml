@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:search="clr-namespace:BrewView.Pages.Search;assembly=BrewView"
+             mc:Ignorable="d"
+             Title="Søk"
+             x:Class="BrewView.Pages.Search.SearchPage"
+             x:DataType="{x:Type search:ISearchPageViewModel}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <SearchBar x:Name="searchBar"
+                   Placeholder="Søk"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
+
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsBusy}"
+                     CommandParameter="{Binding Text,  Source={x:Reference searchBar}}">
+            <CollectionView ItemsSource="{Binding Brews}"
+                            ItemSizingStrategy="MeasureAllItems"
+                            BackgroundColor="White"
+                            ItemTemplate="{StaticResource BrewListItem}">
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="0,100,0,0">
+                        <Label Text="&#x2639;"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="40" />
+
+                        <Label Text="Fant ikke noe"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontSize="20" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+
+</ContentPage>

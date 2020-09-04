@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dataViewModels="clr-namespace:BrewView.DataViewModels;assembly=BrewView"
+             xmlns:search="clr-namespace:BrewView.Pages.Search;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.App">
+    <Application.Resources>
+
+        <DataTemplate x:Key="BrewListItem"
+                      x:DataType="{x:Type dataViewModels:BrewViewModel}">
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type search:ISearchPageViewModel}}, Path=NavigateToDetailsCommand}"
+                                          CommandParameter="{Binding }" />
+                </Grid.GestureRecognizers>
+
+                <Image x:Name="brewImage"
+                       Grid.RowSpan="4"
+                       Source="{Binding SmallImageUrl}" />
+
+                <ActivityIndicator Grid.RowSpan="2"
+                                   Color="Black"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   IsRunning="True"
+                                   IsVisible="False">
+                    <ActivityIndicator.Triggers>
+                        <DataTrigger TargetType="ActivityIndicator"
+                                     Binding="{Binding Source={x:Reference brewImage}, Path=IsLoading}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </ActivityIndicator.Triggers>
+                </ActivityIndicator>
+
+
+                <Label Grid.Column="1"
+                       Text="{Binding Basic.ProductLongName}"
+                       FontAttributes="Bold"
+                       FontSize="16" />
+
+                <StackLayout Grid.Column="1"
+                             Grid.Row="1"
+                             Orientation="Horizontal">
+                    <StackLayout.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="FontAttributes"
+                                    Value="Italic" />
+                            <Setter Property="Padding"
+                                    Value="0,0,5,0" />
+                        </Style>
+                    </StackLayout.Resources>
+                    <Label Text="{Binding Classification.ProductTypeName}"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Basic.AlcoholContent}" />
+                    <Label Text="{Binding Basic.Volume}" />
+                </StackLayout>
+
+                <Label Grid.Row="2"
+                       Grid.Column="1"
+                       Text="{Binding Description.Characteristics.Odour}" />
+                <Label Grid.Row="3"
+                       Grid.Column="1"
+                       Text="{Binding Description.Characteristics.Taste}" />
+            </Grid>
+        </DataTemplate>
+    </Application.Resources>
+</Application>
