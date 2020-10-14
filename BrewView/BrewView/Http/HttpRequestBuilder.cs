@@ -56,7 +56,7 @@ namespace BrewView.Http
             return this;
         }
 
-        public HttpRequestMessage Build()
+        public HttpRequestMessage Build(UriKind kind = UriKind.Relative)
         {
             var queryString = BuildQueryString();
             if (!string.IsNullOrWhiteSpace(queryString))
@@ -69,7 +69,7 @@ namespace BrewView.Http
                 WithAcceptHeader(DefaultAcceptHeader);
             }
 
-            m_requestMessage.RequestUri = new Uri(m_requestUri);
+            m_requestMessage.RequestUri = new Uri(m_requestUri, kind);
             return m_requestMessage;
         }
 

@@ -2,12 +2,18 @@
 {
     public static class AppConstants
     {
-        public static readonly string ApiKey = "fb2d7604481041d381138b8bbe78e89f";
-        public static readonly string ApiUrl = "https://apis.vinmonopolet.no/products/v0/";
-        public static readonly string ProductDetailsEndPoint = "details-normal";
-        public static readonly string BaseAddress = "https://192.168.1.150:5001/";
-        public static readonly string SignInEndPoint = "api/auth/login";
-        public static readonly string Jwt = "JWT";
-        public static readonly string AccountRegistrationEndpoint = "api/account";
+        public const string BaseAddress = "https://192.168.1.150:5566"; // TODO: Make this settable
+
+        // Preferences keys
+        public const string TokenIssuer = "TokenIssuer";
+        public const string RefreshToken = "RefreshToken";
+        public const string IdToken = "IdToken";
+
+        // Endpoints
+        public const string SignInEndPoint = "api/auth/user/signin";
+        public const string AccountRegistrationEndpoint = "api/auth/user/create";
+        public const string RefreshEndpoint = "api/auth/user/refresh/";
+        public const string AuthenticationRequestEndpoint = "api/auth/user/";
+        public const string TokenRequestEndpoint = "api/auth/user/redirect/";
     }
 }

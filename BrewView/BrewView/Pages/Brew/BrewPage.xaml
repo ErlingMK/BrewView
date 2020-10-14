@@ -5,6 +5,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:brew="clr-namespace:BrewView.Pages.Brew;assembly=BrewView"
+             xmlns:shared="clr-namespace:BrewView.Pages.Shared;assembly=BrewView"
+             xmlns:scan="clr-namespace:BrewView.Pages.Shared.Scan;assembly=BrewView"
              mc:Ignorable="d"
              x:Class="BrewView.Pages.Brew.BrewPage"
              x:DataType="{x:Type brew:IBrewPageViewModel}"
@@ -16,6 +18,11 @@
                               BindingContext="{Binding CurrentBrew}"
                               Opacity="0" />
 
-        <brew:BrewListView x:Name="BrewListView"/>
+        <brew:BrewListView x:Name="BrewListView" />
+
+        <scan:ScanButton BindingContext="{Binding ScanViewModel}"
+                           VerticalOptions="End"
+                           HorizontalOptions="End" 
+                           Margin="15"/>
     </Grid>
 </ContentPage>

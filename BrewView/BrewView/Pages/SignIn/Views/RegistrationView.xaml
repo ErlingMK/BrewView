@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fonts="clr-namespace:BrewView.Resources.Fonts;assembly=BrewView"
+             xmlns:signIn="clr-namespace:BrewView.Pages.SignIn;assembly=BrewView"
+             xmlns:strings="clr-namespace:BrewView.Resources.Strings;assembly=BrewView"
+             xmlns:views="clr-namespace:BrewView.Pages.SignIn.Views;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.SignIn.Abstractions;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.SignIn.Views.RegistrationView"
+             x:DataType="{x:Type abstractions:ISignInViewModel}">
+
+    <StackLayout Padding="30,0">
+        <Button HorizontalOptions="Start"
+                VerticalOptions="Start"
+                Text="{x:Static fonts:FontIcons.ArrowLeft}"
+                FontFamily="{x:Static fonts:FontIcons.Solid}"
+                FontSize="20"
+                BackgroundColor="Transparent"
+                Margin="-30,10,0,10"
+                Clicked="Button_OnClicked" />
+
+        <Label Text="{x:Static strings:LocalizedStrings.SignIn_RegisterUser}"
+               FontSize="Large" />
+
+        <views:PlaceholderEntry Placeholder="{x:Static strings:LocalizedStrings.Email}"
+                                 ReturnType="Next"
+                                 Text="{Binding RegistrationViewModel.Email, Mode=OneWayToSource}"
+                                 Validator="{Binding RegistrationViewModel.EmailValidator}" />
+
+        <views:PlaceholderEntry Text="{Binding RegistrationViewModel.Password, Mode=OneWayToSource}"
+                                 Validator="{Binding RegistrationViewModel.PasswordValidator}"
+                                 Placeholder="{x:Static strings:LocalizedStrings.Password}"
+                                 IsPassword="True"
+                                 ReturnType="Next" />
+
+        <views:PlaceholderEntry Placeholder="{x:Static strings:LocalizedStrings.SignIn_RepeatPassword}"
+                                 IsPassword="True"
+                                 ReturnType="Done"
+                                 Validator="{Binding RegistrationViewModel.PasswordMatchValidator}"
+                                 Text="{Binding RegistrationViewModel.PasswordVerification, Mode=OneWayToSource}"
+                                 ReturnCommand="{Binding RegistrationViewModel.RegisterCommand}" />
+
+        <Button Text="{x:Static strings:LocalizedStrings.Register}"
+                HorizontalOptions="End"
+                BackgroundColor="Transparent"
+                Command="{Binding RegistrationViewModel.RegisterCommand}" />
+    </StackLayout>
+</ContentView>

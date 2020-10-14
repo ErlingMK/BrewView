@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BrewView.GraphQL;
+﻿using BrewView.GraphQL;
 using BrewView.Http;
+using BrewView.Pages;
 using BrewView.Pages.Brew;
 using BrewView.Pages.Search;
+using BrewView.Pages.Shared;
+using BrewView.Pages.Shared.Scan;
 using BrewView.Pages.SignIn;
+using BrewView.Pages.SignIn.Abstractions;
 using BrewView.Services;
 using BrewView.Services.Abstracts;
-using GraphQL.Client.Abstractions;
-using GraphQL.Client.Http;
+using BrewView.Services.Account;
 using LightInject;
 
 namespace BrewView
@@ -25,9 +25,12 @@ namespace BrewView
 
         private void RegisterPages(IServiceRegistry serviceRegistry)
         {
+            serviceRegistry.Register(factory => new MainPage(factory.GetInstance<ISearchPageViewModel>(),
+                factory.GetInstance<IBrewPageViewModel>(), factory.GetInstance<SearchPage>(),
+                factory.GetInstance<BrewPage>()));
             serviceRegistry.Register(fac => new BrewPage(), new PerContainerLifetime());
             serviceRegistry.Register(fac => new SearchPage(), new PerContainerLifetime());
-            serviceRegistry.Register(fac => new SignInPage());
+            serviceRegistry.Register(fac => new SignInPage(){BindingContext = fac.GetInstance<ISignInViewModel>()});
         }
 
         private void RegisterViewModels(IServiceRegistry serviceRegistry)
@@ -35,6 +38,8 @@ namespace BrewView
             serviceRegistry.Register<ISearchPageViewModel, SearchPagePageViewModel>(new PerContainerLifetime());
             serviceRegistry.Register<IBrewPageViewModel, BrewPageViewModel>(new PerContainerLifetime());
             serviceRegistry.Register<ISignInViewModel, SignInViewModel>(new PerContainerLifetime());
+
+            serviceRegistry.Register<IScanViewModel, ScanViewModel>();
         }
 
         private void RegisterServices(IServiceRegistry serviceRegistry)
@@ -43,10 +48,10 @@ namespace BrewView
             serviceRegistry.Register<IRestClient, RestClient>();
             serviceRegistry.Register<IGraphQLClientFactory, GraphQLClientFactory>();
 
-            serviceRegistry.Register<IVinmonopolService, VinmonopolService>();
             serviceRegistry.Register<IBrewService, BrewService>();
             serviceRegistry.Register<INavigationService, NavigationService>();
             serviceRegistry.Register<IAccountService, AccountService>();
+            serviceRegistry.Register<ITokenService, TokenService>(new PerContainerLifetime());
             serviceRegistry.Register<IExceptionHandler, ExceptionHandler>();
 
             serviceRegistry.Register<IModelMapper, ModelMapper>();

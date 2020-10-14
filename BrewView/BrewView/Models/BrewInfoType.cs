@@ -15,4 +15,5 @@ namespace BrewView.Models
         public string ProductId { get; set; }
         public string Gtin { get; set; }
     }
+
 }

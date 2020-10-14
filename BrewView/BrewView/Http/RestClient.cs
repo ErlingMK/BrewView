@@ -7,11 +7,11 @@ namespace BrewView.Http
 {
     public class RestClient : IRestClient
     {
-        private HttpClient m_client;
+        private readonly HttpClient m_client;
 
         public RestClient(IHttpClientFactory httpClientFactory)
         {
-            m_client = httpClientFactory.CreateClient();
+            m_client = httpClientFactory.CreateRestClient();
         }
 
         public async Task<T> Send<T>(HttpRequestMessage message)

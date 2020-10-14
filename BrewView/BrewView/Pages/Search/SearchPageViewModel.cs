@@ -18,12 +18,10 @@ namespace BrewView.Pages.Search
         private readonly IExceptionHandler m_exceptionHandler;
         private readonly IBrewPageViewModel m_brewPageViewModel;
         private readonly INavigationService m_navigationService;
-        private readonly IVinmonopolService m_vinmonopolService;
         private bool m_isBusy;
 
-        public SearchPagePageViewModel(IVinmonopolService vinmonopolService, IExceptionHandler exceptionHandler, IBrewPageViewModel brewPageViewModel, INavigationService navigationService)
+        public SearchPagePageViewModel(IExceptionHandler exceptionHandler, IBrewPageViewModel brewPageViewModel, INavigationService navigationService)
         {
-            m_vinmonopolService = vinmonopolService;
             m_exceptionHandler = exceptionHandler;
             m_brewPageViewModel = brewPageViewModel;
             m_navigationService = navigationService;
@@ -54,8 +52,6 @@ namespace BrewView.Pages.Search
             Brews.Clear();
             try
             {
-                var brews = await m_vinmonopolService.SearchBrews(searchString);
-                brews.ForEach(b => Brews.Add(b));
             }
             catch (Exception e)
             {

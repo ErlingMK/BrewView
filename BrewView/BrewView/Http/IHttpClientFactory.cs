@@ -1,9 +1,11 @@
 ﻿using System.Net.Http;
+using BrewView.Services.Account;
 
 namespace BrewView.Http
 {
     public interface IHttpClientFactory
     {
-        HttpClient CreateClient();
+        HttpClient CreateRestClient();
+        HttpClient CreateGraphQLClient();
     }
 }

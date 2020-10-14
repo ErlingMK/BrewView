@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Net.Http;
 using System.Threading.Tasks;
-using BrewView.Http;
 using BrewView.Models;
+using BrewView.Pages.SignIn.Abstractions;
 using BrewView.Services;
+using BrewView.Services.Account;
 using DIPS.Xamarin.UI.Commands;
 using DIPS.Xamarin.UI.Extensions;
 
@@ -12,29 +12,102 @@ namespace BrewView.Pages.SignIn
 {
     public class SignInViewModel : ISignInViewModel
     {
-        private readonly INavigationService m_navigationService;
         private readonly IAccountService m_accountService;
-        private readonly IRestClient m_restClient;
+        private readonly ITokenService m_tokenService;
+        private readonly INavigationService m_navigationService;
+        private string m_email;
         private bool m_isBusy;
+        private string m_password;
 
-        public SignInViewModel(IRestClient restClient, INavigationService navigationService, IAccountService accountService)
+        public SignInViewModel(INavigationService navigationService,
+            IAccountService accountService, ITokenService tokenService)
         {
-            m_restClient = restClient;
+            RegistrationViewModel = new RegistrationViewModel(accountService, navigationService, this);
             m_navigationService = navigationService;
             m_accountService = accountService;
+            m_tokenService = tokenService;
 
-            RegisterCommand = new AsyncCommand(Register);
-            SignInCommand = new AsyncCommand(SignIn);
-            DemoCommand = new AsyncCommand(async () =>
-            {
-                CredentialsModel.Password = "asdasd";
-                CredentialsModel.Username = "Testbruker";
-                await SignIn();
-            });
+            SignInCommand = new AsyncCommand(SignIn, () => !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
+            ProviderSignInCommand = new AsyncCommand<string>(ProviderSignIn);
         }
 
-        public CredentialsModel CredentialsModel { get; } = new CredentialsModel();
-        public RegistrationModel RegistrationModel { get; } = new RegistrationModel();
+        private async Task ProviderSignIn(string provider)
+        {
+            try
+            {
+                await m_accountService.SignIn(provider);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public IRegistrationViewModel RegistrationViewModel { get; }
+        public IAsyncCommand<string> ProviderSignInCommand { get; }
+        public async Task ProviderTokenRequest(string intentDataString)
+        {
+            IsBusy = true;
+
+            try
+            {
+                if (await m_accountService.ProviderTokenRequest(intentDataString))
+                {
+                    await m_navigationService.RemoveSignIn();
+                }
+                else
+                {
+                    //TODO: Display error
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task<bool> IsSignedIn()
+        {
+            IsBusy = true;
+            try
+            {
+                return await m_tokenService.HasValidTokens();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            return false;
+        }
+
+        public string Password
+        {
+            get => m_password;
+            set
+            {
+                m_password = value;
+                SignInCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Email
+        {
+            get => m_email;
+            set
+            {
+                m_email = value;
+                SignInCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public bool IsBusy
         {
@@ -42,10 +115,11 @@ namespace BrewView.Pages.SignIn
             set => PropertyChanged.RaiseWhenSet(ref m_isBusy, value);
         }
 
-        public IAsyncCommand RegisterCommand { get; }
         public IAsyncCommand SignInCommand { get; }
-        public IAsyncCommand DemoCommand { get; }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         private async Task SignIn()
         {
@@ -53,11 +127,13 @@ namespace BrewView.Pages.SignIn
 
             try
             {
-                var response = await m_accountService.SignIn(CredentialsModel);
-                
-                Xamarin.Essentials.Preferences.Set(AppConstants.Jwt, response);
+                var response = await m_accountService.SignIn(new CredentialsModel {Email = Email, Password = Password});
 
-                m_navigationService.SwitchMainPage();
+                if (response.Succeeded) await m_navigationService.RemoveSignIn();
+                else
+                {
+                    //TODO: Display error
+                }
             }
             catch (Exception e)
             {
@@ -68,36 +144,5 @@ namespace BrewView.Pages.SignIn
                 IsBusy = false;
             }
         }
-
-        private async Task Register()
-        {
-            IsBusy = true;
-            try
-            {
-                await m_accountService.RegisterUser(RegistrationModel);
-
-                CredentialsModel.Password = RegistrationModel.Password;
-                CredentialsModel.Username = RegistrationModel.Username;
-                await SignIn();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-    }
-
-    public interface ISignInViewModel : INotifyPropertyChanged
-    {
-        CredentialsModel CredentialsModel { get; }
-        RegistrationModel RegistrationModel { get; }
-        bool IsBusy { get; }
-        IAsyncCommand RegisterCommand { get; }
-        IAsyncCommand SignInCommand { get; }
-        IAsyncCommand DemoCommand { get; }
     }
 }

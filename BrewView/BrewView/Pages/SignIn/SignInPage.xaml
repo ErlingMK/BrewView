@@ -5,24 +5,29 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:signIn="clr-namespace:BrewView.Pages.SignIn;assembly=BrewView"
+             xmlns:valueConverters="http://dips.xamarin.ui.com"
+             xmlns:views="clr-namespace:BrewView.Pages.SignIn.Views;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.SignIn.Abstractions;assembly=BrewView"
              mc:Ignorable="d"
              x:Class="BrewView.Pages.SignIn.SignInPage"
-             x:DataType="{x:Type signIn:ISignInViewModel}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <signIn:RegistrationView x:Name="RegistrationView"
+             x:DataType="{x:Type abstractions:ISignInViewModel}">
+    <Grid RowDefinitions="1.5*, *">
+        <views:RegistrationView x:Name="RegistrationView"
                                  Grid.RowSpan="2"
                                  RegistrationCancelled="OnRegistrationCancelled"
                                  Opacity="0" />
-        <signIn:CredentialsView x:Name="CredentialsView"
+        <views:CredentialsView x:Name="CredentialsView"
                                 Grid.RowSpan="2"
                                 RegistrationSelected="OnRegisterTapped" />
 
-        <ActivityIndicator Grid.Row="1"
-                           VerticalOptions="Start"
+        <BoxView Grid.RowSpan="2"
+                 Opacity=".5"
+                 BackgroundColor="Gray"
+                 IsVisible="{Binding IsBusy}"
+                 InputTransparent="{Binding IsBusy, Converter={valueConverters:InvertedBoolConverter}}" />
+
+        <ActivityIndicator Grid.RowSpan="2"
+                           VerticalOptions="Center"
                            HorizontalOptions="Center"
                            IsRunning="True"
                            IsVisible="{Binding IsBusy}" />

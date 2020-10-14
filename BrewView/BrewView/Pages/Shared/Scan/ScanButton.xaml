@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fonts="clr-namespace:BrewView.Resources.Fonts;assembly=BrewView"
+             xmlns:shared="clr-namespace:BrewView.Pages.Shared;assembly=BrewView"
+             xmlns:scan="clr-namespace:BrewView.Pages.Shared.Scan;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.Shared.Scan.ScanButton"
+             x:DataType="{x:Type scan:IScanViewModel}">
+
+    <Button HeightRequest="60"
+            WidthRequest="60"
+            CornerRadius="30" 
+            FontFamily="{x:Static fonts:FontIcons.Solid}"
+            Text="{x:Static fonts:FontIcons.Barcode}"
+            FontSize="25"
+            BorderWidth="2"
+            TextColor="White"
+            BorderColor="Black"
+            BackgroundColor="Teal"
+            Command="{Binding OpenScanViewCommand}"/>
+</ContentView>

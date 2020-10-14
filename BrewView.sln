@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewView.Android", "BrewVie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewView.iOS", "BrewView\BrewView.iOS\BrewView.iOS.csproj", "{9AB19E08-E938-4488-B75A-E96445413B32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrewView", "BrewView\BrewView\BrewView.csproj", "{9793347A-D9B3-4B8A-822D-CFF2F74E22E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrewView", "BrewView\BrewView\BrewView.csproj", "{9793347A-D9B3-4B8A-822D-CFF2F74E22E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

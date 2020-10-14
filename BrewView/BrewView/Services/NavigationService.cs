@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BrewView.Pages;
+using BrewView.Pages.SignIn;
 using LightInject;
 using Xamarin.Forms;
+using ZXing.Mobile;
+using ZXing.Net.Mobile.Forms;
 
 namespace BrewView.Services
 {
@@ -33,12 +37,26 @@ namespace BrewView.Services
             mainPage.Children.Add(contentPage);
         }
 
-        public async void SwitchMainPage()
+        public async Task RemoveSignIn()
         {
-            var mainPage = m_serviceContainer.GetInstance<MainPage>();
-            var initialize = mainPage.Initialize();
-            m_app.MainPage = mainPage;
-            await initialize;
+            if (!m_app.MainPage.Navigation.ModalStack.Any()) return;
+            await m_app.MainPage.Navigation.PopModalAsync();
+
+        }
+
+        public async Task ShowSignIn(bool animate = true)
+        {   
+            if (m_app.MainPage.Navigation.ModalStack.LastOrDefault() is SignInPage) return;
+            await m_app.MainPage.Navigation.PushModalAsync(m_serviceContainer.GetInstance<SignInPage>(), animate);
+        }
+
+        public async Task<ZXingScannerPage> PushScanModal(MobileBarcodeScanningOptions options = null)
+        {
+            options ??= new MobileBarcodeScanningOptions();
+
+            var page = new ZXingScannerPage(options);
+            await m_app.MainPage.Navigation.PushModalAsync(page);
+            return page;
         }
     }
 
@@ -46,6 +64,8 @@ namespace BrewView.Services
     {
         void SwitchTabbedPage<TPage>() where TPage : Page;
         void ShowError(Exception e);
-        void SwitchMainPage();
+        Task RemoveSignIn();
+        Task ShowSignIn(bool animate = true);
+        Task<ZXingScannerPage> PushScanModal(MobileBarcodeScanningOptions options = null);
     }
 }
