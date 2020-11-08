@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BrewView.Contracts.User;
 using BrewView.Models;
 
 namespace BrewView.Services.Account

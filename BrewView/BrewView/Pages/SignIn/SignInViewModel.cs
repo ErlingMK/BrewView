@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BrewView.Models;
+using BrewView.Contracts.User;
+using BrewView.Pages.Brew;
+using BrewView.Pages.Brew.List;
 using BrewView.Pages.SignIn.Abstractions;
 using BrewView.Services;
 using BrewView.Services.Account;
@@ -13,38 +15,34 @@ namespace BrewView.Pages.SignIn
     public class SignInViewModel : ISignInViewModel
     {
         private readonly IAccountService m_accountService;
-        private readonly ITokenService m_tokenService;
         private readonly INavigationService m_navigationService;
+        private readonly ITokenService m_tokenService;
+        private readonly IBrewListViewModel m_brewListViewModel;
         private string m_email;
         private bool m_isBusy;
         private string m_password;
 
         public SignInViewModel(INavigationService navigationService,
-            IAccountService accountService, ITokenService tokenService)
+            IAccountService accountService, ITokenService tokenService, IBrewListViewModel brewListViewModel)
         {
             RegistrationViewModel = new RegistrationViewModel(accountService, navigationService, this);
             m_navigationService = navigationService;
             m_accountService = accountService;
             m_tokenService = tokenService;
+            m_brewListViewModel = brewListViewModel;
 
-            SignInCommand = new AsyncCommand(SignIn, () => !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password));
+            SignInCommand = new AsyncCommand(SignIn,
+                () =>
+                {
+                    if (AppSettings.IsDemo) return true;
+                    return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
+                });
             ProviderSignInCommand = new AsyncCommand<string>(ProviderSignIn);
-        }
-
-        private async Task ProviderSignIn(string provider)
-        {
-            try
-            {
-                await m_accountService.SignIn(provider);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
         }
 
         public IRegistrationViewModel RegistrationViewModel { get; }
         public IAsyncCommand<string> ProviderSignInCommand { get; }
+
         public async Task ProviderTokenRequest(string intentDataString)
         {
             IsBusy = true;
@@ -54,10 +52,6 @@ namespace BrewView.Pages.SignIn
                 if (await m_accountService.ProviderTokenRequest(intentDataString))
                 {
                     await m_navigationService.RemoveSignIn();
-                }
-                else
-                {
-                    //TODO: Display error
                 }
             }
             catch (Exception e)
@@ -101,7 +95,7 @@ namespace BrewView.Pages.SignIn
 
         public string Email
         {
-            get => m_email;
+            get => m_email; 
             set
             {
                 m_email = value;
@@ -120,6 +114,18 @@ namespace BrewView.Pages.SignIn
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private async Task ProviderSignIn(string provider)
+        {
+            try
+            {
+                await m_accountService.SignIn(provider);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
 
         private async Task SignIn()
         {
@@ -127,12 +133,23 @@ namespace BrewView.Pages.SignIn
 
             try
             {
-                var response = await m_accountService.SignIn(new CredentialsModel {Email = Email, Password = Password});
+                UserValidationResponse response = null;
 
-                if (response.Succeeded) await m_navigationService.RemoveSignIn();
+                if (AppSettings.IsDemo)
+                {
+                    await m_navigationService.RemoveSignIn();
+                    response = new UserValidationResponse(true);
+                }
                 else
                 {
-                    //TODO: Display error
+                    response = await m_accountService.SignIn(new CredentialsModel {Email = Email, Password = Password});
+                }
+
+                if (response.Succeeded)
+                {
+                    var initialize = m_brewListViewModel.Initialize();
+                    await m_navigationService.RemoveSignIn();
+                    await initialize;
                 }
             }
             catch (Exception e)

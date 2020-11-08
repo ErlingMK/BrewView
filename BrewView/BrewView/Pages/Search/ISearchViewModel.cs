@@ -6,7 +6,7 @@ using BrewView.DataViewModels;
 
 namespace BrewView.Pages.Search
 {
-    public interface ISearchPageViewModel : INotifyPropertyChanged
+    public interface ISearchViewModel : INotifyPropertyChanged
     {
         bool IsBusy { get; }
         ICommand SearchCommand { get; }

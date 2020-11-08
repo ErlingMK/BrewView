@@ -4,21 +4,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:signIn="clr-namespace:BrewView.Pages.SignIn;assembly=BrewView"
              xmlns:valueConverters="http://dips.xamarin.ui.com"
              xmlns:views="clr-namespace:BrewView.Pages.SignIn.Views;assembly=BrewView"
              xmlns:abstractions="clr-namespace:BrewView.Pages.SignIn.Abstractions;assembly=BrewView"
+             xmlns:brewView="clr-namespace:BrewView;assembly=BrewView"
              mc:Ignorable="d"
              x:Class="BrewView.Pages.SignIn.SignInPage"
              x:DataType="{x:Type abstractions:ISignInViewModel}">
     <Grid RowDefinitions="1.5*, *">
         <views:RegistrationView x:Name="RegistrationView"
-                                 Grid.RowSpan="2"
-                                 RegistrationCancelled="OnRegistrationCancelled"
-                                 Opacity="0" />
-        <views:CredentialsView x:Name="CredentialsView"
                                 Grid.RowSpan="2"
-                                RegistrationSelected="OnRegisterTapped" />
+                                RegistrationCancelled="OnRegistrationCancelled"
+                                Opacity="0" />
+        <views:CredentialsView x:Name="CredentialsView"
+                               Grid.RowSpan="2"
+                               RegistrationSelected="OnRegisterTapped" />
 
         <BoxView Grid.RowSpan="2"
                  Opacity=".5"
@@ -31,6 +31,19 @@
                            HorizontalOptions="Center"
                            IsRunning="True"
                            IsVisible="{Binding IsBusy}" />
+        <StackLayout Orientation="Horizontal"
+                     Padding="20,0"
+                     Grid.Row="1"
+                     VerticalOptions="End">
+            <CheckBox CheckedChanged="CheckBox_OnCheckedChanged" />
+
+            <Label Text="Demo?" 
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="Center"/>
+
+            <Label Text="{x:Static brewView:AppConstants.BaseAddress}"
+                   VerticalOptions="Center" />
+        </StackLayout>
 
     </Grid>
 

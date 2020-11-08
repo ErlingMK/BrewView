@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:actions="clr-namespace:BrewView.Pages.Shared.Actions;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.Shared.BusyView"
+             InputTransparent="True">
+    <Grid>
+        <Grid.Triggers>
+            <DataTrigger TargetType="Grid"
+                         Binding="{Binding IsBusy}"
+                         Value="True">
+                <DataTrigger.ExitActions>
+                    <actions:FadeToAction FadeTo="0" Duration="500" />
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Grid.Triggers>
+        <BoxView Color="White" />
+
+        <ActivityIndicator VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
+    </Grid>
+</ContentView>

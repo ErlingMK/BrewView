@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BrewView.Pages.Brew;
+using BrewView.Contracts;
+using BrewView.Pages.Brew.Details;
 using BrewView.Services;
 using DIPS.Xamarin.UI.Commands;
 using DIPS.Xamarin.UI.Extensions;
@@ -10,20 +12,34 @@ namespace BrewView.DataViewModels
 {
     public class BrewViewModel : INotifyPropertyChanged
     {
+        private readonly INavigationService m_navigationService;
         private string m_largeImageUrl;
         private string m_smallImageUrl;
 
-        public BrewViewModel()
+        public BrewViewModel(INavigationService navigationService)
         {
-            MakeFavoriteCommand = new AsyncCommand(MakeFavorite);
+            m_navigationService = navigationService;
+            SelectedCommand = new AsyncCommand<BrewViewModel>(Navigate, OnException);
         }
 
+        private void OnException(Exception obj)
+        {
+            
+        }
+
+        private async Task Navigate(BrewViewModel viewModel)
+        {
+            await m_navigationService.Push<BrewDetailsPage, IBrewDetailsViewModel>(async model => await model.Load(viewModel));
+        }
+
+        public bool IsFavorite { get; set; } = true;
         public BasicViewModel Basic { get; set; }
         public Logistics Logistics { get; set; }
         public Origins Origins { get; set; }
         public Properties Properties { get; set; }
         public Classification Classification { get; set; }
         public Description Description { get; set; }
+        public Ingredients Ingredients { get; set; }
         public IList<Price> Prices { get; set; }
 
         public string SmallImageUrl
@@ -39,13 +55,8 @@ namespace BrewView.DataViewModels
         }
 
 
-        public IAsyncCommand MakeFavoriteCommand { get; }
+        public IAsyncCommand<BrewViewModel> SelectedCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private Task MakeFavorite()
-        {
-            return Task.CompletedTask;
-        }
     }
 }

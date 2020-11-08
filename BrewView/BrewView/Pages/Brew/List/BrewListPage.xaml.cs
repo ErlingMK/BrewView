@@ -1,12 +1,12 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace BrewView.Pages
+namespace BrewView.Pages.Brew.List
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class BrewListPage : ContentPage
     {
-        public MainPage()
+        public BrewListPage()
         {
             InitializeComponent();
         }

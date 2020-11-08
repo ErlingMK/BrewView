@@ -17,6 +17,8 @@ namespace BrewView.Services
         private readonly IServiceContainer m_serviceContainer;
         private readonly App m_app;
 
+        private INavigation Navigation => m_app.MainPage.Navigation;
+
         public NavigationService(IServiceContainer serviceContainer, App app)
         {
             m_serviceContainer = serviceContainer;
@@ -58,6 +60,25 @@ namespace BrewView.Services
             await m_app.MainPage.Navigation.PushModalAsync(page);
             return page;
         }
+
+        public async Task PopScanModal()
+        {
+            if (Navigation.ModalStack.Any() &&
+                Navigation.ModalStack.LastOrDefault()?.GetType() == typeof(ZXingScannerPage))
+            {
+                await Navigation.PopModalAsync();
+            }
+        }
+
+        public async Task Push<TPage, TViewModel>(Action<TViewModel> beforeAction) where TPage : Page
+        {
+            var navigationPage = m_serviceContainer.GetInstance<NavigationPage>();
+            var page = m_serviceContainer.GetInstance<TPage>();
+            var viewModel = m_serviceContainer.GetInstance<TViewModel>();
+            beforeAction.Invoke(viewModel);
+
+            await navigationPage.PushAsync(page);
+        }
     }
 
     public interface INavigationService
@@ -67,5 +88,7 @@ namespace BrewView.Services
         Task RemoveSignIn();
         Task ShowSignIn(bool animate = true);
         Task<ZXingScannerPage> PushScanModal(MobileBarcodeScanningOptions options = null);
+        Task PopScanModal();
+        Task Push<TPage, TViewModel>(Action<TViewModel> beforeAction) where TPage : Page;
     }
 }

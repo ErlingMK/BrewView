@@ -4,11 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:effects="clr-namespace:BrewView.Effects;assembly=BrewView"
              mc:Ignorable="d"
              x:Class="BrewView.Pages.SignIn.Views.PlaceholderEntry"
              x:Name="ContentView">
-    <Grid Margin="0,10,0,0">
-        <Entry x:Name="entry" 
+    <Grid>
+        <Entry x:Name="entry"
+               Margin="0,15,0,0"
                ClearButtonVisibility="WhileEditing"
                Placeholder="{Binding Source={x:Reference ContentView}, Path=Placeholder}"
                IsPassword="{Binding Source={x:Reference ContentView}, Path=IsPassword}"
@@ -16,13 +18,16 @@
                TextChanged="InputView_OnTextChanged"
                Text="{Binding Source={x:Reference ContentView}, Path=Text, Mode=OneWayToSource}"
                ReturnCommand="{Binding Source={x:Reference ContentView}, Path=ReturnCommand}"
-               Completed="Entry_OnCompleted"/>
+               Completed="Entry_OnCompleted">
+            <Entry.Effects>
+                <effects:EntryEffect />
+            </Entry.Effects>
+        </Entry>
         <Label x:Name="label"
                Opacity="0"
                InputTransparent="True"
                Text="{Binding Source={x:Reference ContentView}, Path=Placeholder}"
                FontSize="10"
-               VerticalOptions="Start"
-               Margin="5,0,0,0" />
+               VerticalOptions="Start" />
     </Grid>
 </ContentView>

@@ -7,30 +7,32 @@ namespace BrewView.DataViewModels
 {
     public class BasicViewModel
     {
-        public BasicViewModel(string volume, string alcoholContent, string productLongName)
+        public BasicViewModel(string volume, string alcoholContent, string productLongName, string productId, string productShortName)
         {
             Volume = volume;
             AlcoholContent = alcoholContent;
             ProductLongName = productLongName;
+            ProductId = productId;
+            ProductShortName = productShortName;
         }
 
-        public string ProductId { get; set; }
-        public string ProductShortName { get; set; }
-        public string ProductLongName { get; set; }
-        public string Volume { get; set; }
-        public string AlcoholContent { get; set; }
-        public int Vintage { get; set; }
-        public string AgeLimit { get; set; }
-        public string PackagingMaterialId { get; set; }
-        public string PackagingMaterial { get; set; }
-        public string VolumTypeId { get; set; }
-        public string VolumType { get; set; }
-        public string CorkTypeId { get; set; }
-        public string CorkType { get; set; }
-        public int BottlePerSalesUnit { get; set; }
-        public string IntroductionDate { get; set; }
-        public string ProductStatusSaleId { get; set; }
-        public string ProductStatusSaleName { get; set; }
-        public string ProductStatusSaleValidFrom { get; set; }
+        public string ProductId { get; }
+        public string ProductShortName { get; }
+        public string ProductLongName { get; }
+        public string Volume { get; }
+        public string AlcoholContent { get; }
+        public int Vintage { get; }
+        public string AgeLimit { get; }
+        public string PackagingMaterialId { get; }
+        public string PackagingMaterial { get;  }
+        public string VolumTypeId { get; }
+        public string VolumType { get;  }
+        public string CorkTypeId { get;  }
+        public string CorkType { get;  }
+        public int BottlePerSalesUnit { get;  }
+        public string IntroductionDate { get; }
+        public string ProductStatusSaleId { get; }
+        public string ProductStatusSaleName { get; }
+        public string ProductStatusSaleValidFrom { get; }
     }
 }

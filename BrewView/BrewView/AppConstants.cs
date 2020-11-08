@@ -2,7 +2,7 @@
 {
     public static class AppConstants
     {
-        public const string BaseAddress = "https://192.168.1.150:5566"; // TODO: Make this settable
+        public const string BaseAddress = "https://192.168.0.20:5566"; // TODO: Make this settable
 
         // Preferences keys
         public const string TokenIssuer = "TokenIssuer";
@@ -15,5 +15,7 @@
         public const string RefreshEndpoint = "api/auth/user/refresh/";
         public const string AuthenticationRequestEndpoint = "api/auth/user/";
         public const string TokenRequestEndpoint = "api/auth/user/redirect/";
+
+        public const string ResolutionName = "com.moxnes.brewview";
     }
-}
+} 

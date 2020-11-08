@@ -1,0 +1,100 @@
+{
+  "basic": {
+    "ageLimit": "18",
+    "productShortName": "Nøgne Ø Imperial Brown Ale",
+    "productStatusSaleName": "",
+    "productId": "1072002",
+    "alcoholContent": 7.5,
+    "corkType": "Crown Cap",
+    "volume": 0.5,
+    "introductionDate": "2019-01-11",
+    "productLongName": "Nøgne Ø Imperial Brown Ale",
+    "vintage": 0,
+    "volumType": "Halvflaske"
+  },
+  "classification": {
+    "productTypeName": "Brown ale",
+    "mainProductTypeId": "5",
+    "mainProductTypeName": "Øl",
+    "productGroupId": "85",
+    "productGroupName": "Øl, overgjæret",
+    "productTypeId": "50128",
+    "subProductTypeId": "501",
+    "subProductTypeName": "Øl"
+  },
+  "description": {
+    "characteristics": {
+      "colour": "Dyp brun.",
+      "odour": "Sval aroma med fint preg av mørkt og gyllent malt, streif av kaffe, karamell og urter.",
+      "taste": "Kremet, nyansert med fint maltpreg, innslag av urter og tørket frukt. Lang."
+    },
+    "bitterness": "07",
+    "freshness": "05",
+    "fullness": "11",
+    "recommendedFood": [],
+    "sweetness": "04",
+    "tannins": "01"
+  },
+  "ingredients": {
+    "grapes": [
+      {
+        "grapeId": "067",
+        "grapeDesc": "Cabernet Franc",
+        "grapePct": 1
+      },
+      {
+        "grapeId": "068",
+        "grapeDesc": "Cabernet Sauvignon",
+        "grapePct": 32
+      },
+      {
+        "grapeId": "211",
+        "grapeDesc": "Merlot",
+        "grapePct": 67
+      }
+    ],
+    "ingredients": "",
+    "sugar": "< 3",
+    "acid": "3,9"
+  },
+  "lastChanged": {
+    "date": "2020-09-01T00:00:00.000+02:00"
+  },
+  "logistics": {
+    "manufacturerId": "66953",
+    "manufacturerName": "Nøgne Ø Det kompromissløse Bryggeri",
+    "vendorId": "30000",
+    "vendorName": "Vectura AS",
+    "wholesalerId": "30096",
+    "wholesalerName": "Nøgne Ø - Det Kompromissløse Brygge"
+  },
+  "origins": {
+    "origin": {
+      "country": "Norge",
+      "countryId": "NO",
+      "region": "Agder",
+      "regionId": "42",
+      "subRegion": "",
+      "subRegionId": ""
+    },
+    "production": {
+      "country": "",
+      "countryId": "",
+      "region": "",
+      "regionId": ""
+    }
+  },
+  "prices": [
+    {
+      "salesPrice": 59.9,
+      "salesPricePrLiter": 119.8
+    }
+  ],
+  "properties": {
+    "sweetWine": false,
+    "locallyProduced": false,
+    "productionMethodStorage": "Overgjæret. Ikke lagret.",
+    "storagePotential": "Drikkeklar nå, men kan også lagres",
+    "vintageControlled": false
+  }
+}

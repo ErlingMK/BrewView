@@ -6,9 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:search="clr-namespace:BrewView.Pages.Search;assembly=BrewView"
              mc:Ignorable="d"
-             Title="Søk"
              x:Class="BrewView.Pages.Search.SearchPage"
-             x:DataType="{x:Type search:ISearchPageViewModel}">
+             x:DataType="{x:Type search:ISearchViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>

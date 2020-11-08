@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Name="codeBehind"
-             x:Class="BrewView.Pages.Brew.KeyValueView">
+             x:Class="BrewView.Pages.Brew.Details.KeyValueView">
 
     <StackLayout Spacing="-4">
         <Label Text="{Binding Source={x:Reference codeBehind}, Path=Key}" 

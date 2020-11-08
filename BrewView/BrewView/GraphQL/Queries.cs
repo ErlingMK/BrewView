@@ -2,9 +2,102 @@
 {
     public class Queries
     {
-        public const string BrewByGtin = @"query ($gtin: String){
-  alcoholicEntity(gtin: $gtin){
+        public const string Brew = @"query Brew($productId : String){
+  brew(productId: $productId){
     basic{
+      ageLimit
+      productShortName
+      productStatusSaleName
+      productId
+      alcoholContent
+      corkType
+      volume
+      introductionDate
+      productId
+      productLongName
+      vintage
+      volumType
+    }
+    classification{
+      productTypeName
+      mainProductTypeId
+      mainProductTypeName
+      productGroupId
+      productGroupName
+      productTypeId
+      subProductTypeId
+      subProductTypeName
+    }
+    description{
+      characteristics{
+        colour
+        odour
+        taste
+      }
+      bitterness
+      freshness
+      fullness
+      recommendedFood{
+        foodDesc
+        foodId
+      }
+      sweetness
+      tannins
+    }
+    ingredients{
+      acid
+      grapes{
+        grapeDesc
+        grapeId
+        grapePct
+      }
+      sugar
+    }
+    lastChanged{
+      date
+    }
+    logistics{
+      manufacturerId
+      manufacturerName
+      vendorId
+      vendorName
+      wholesalerId
+      wholesalerName
+    }
+    origins{
+      origin{
+        country
+        countryId
+        region
+        regionId
+        subRegion
+        subRegionId
+      }
+      production{
+        country
+        countryId
+        region
+        regionId
+      }
+    }
+    prices{
+      salesPrice
+      salesPricePrLiter
+    }
+    properties{
+     sweetWine
+     locallyProduced
+     productionMethodStorage
+     storagePotential
+     vintageControlled 
+    }
+  }
+}";
+
+        public const string BrewByGtin = @"query GetBrewByCode($gtin: String){
+  brewWithCode(gtin : $gtin){
+    basic{
+      productId
       productLongName
       alcoholContent
       volume
@@ -17,6 +110,23 @@
       }
       sweetness
       fullness
+    }
+  }
+}";
+
+        public const string Brews = @"query{
+  brews{
+    basic{
+      productId
+      productShortName
+      alcoholContent
+    }
+    description{
+      characteristics{
+        colour
+        odour
+        taste
+      }
     }
   }
 }";

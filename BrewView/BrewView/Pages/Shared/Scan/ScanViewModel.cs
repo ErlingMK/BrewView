@@ -37,8 +37,10 @@ namespace BrewView.Pages.Shared.Scan
             m_scanModal.OnScanResult += OnScanResult;
         }
 
-        private void OnScanResult(Result result)
+        private async void OnScanResult(Result result)
         {
+            await m_navigationService.PopScanModal();
+
             m_scanModal.IsScanning = false;
 
             if (result != null)

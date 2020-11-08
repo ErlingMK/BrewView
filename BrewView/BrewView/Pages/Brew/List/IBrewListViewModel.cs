@@ -3,17 +3,17 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using BrewView.DataViewModels;
 using BrewView.Pages.Shared.Scan;
+using DIPS.Xamarin.UI.Commands;
 
-namespace BrewView.Pages.Brew
+namespace BrewView.Pages.Brew.List
 {
-    public interface IBrewPageViewModel : INotifyPropertyChanged
+    public interface IBrewListViewModel : INotifyPropertyChanged
     {
-        ObservableCollection<BrewViewModel> MyBrews { get; }
-        BrewViewModel CurrentBrew { get; set; }
-        bool IsBusy { get; }
         Task Initialize();
         ViewState State { get; set; }
-        Task<bool> FindBrew(string gtin);
+        Task FindBrew(string gtin);
         IScanViewModel ScanViewModel { get; }
+        ObservableCollection<BrewViewModel> MyBrews { get; set; }
+        bool IsBusy { get; set; }
     }
 }

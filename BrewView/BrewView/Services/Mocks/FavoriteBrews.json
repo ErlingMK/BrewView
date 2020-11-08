@@ -1,0 +1,128 @@
+[
+  {
+    "basic": {
+      "productId": "1053802",
+      "productShortName": "Nøgne Ø Imperial Stout",
+      "productLongName": "Nøgne Ø Imperial Stout",
+      "alcoholContent": 9,
+      "volume": 0.5
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Rik aroma av mørkt malt, kaffe, røyk, innslag av mørke bær.",
+        "taste": "Kremet og nyansert. Preg av mørkt malt og tørket frukt, innslag av kaffe og tjære. Lang."
+      }
+    },
+    "classification": {
+      "productTypeName": "Porter & stout"
+    }
+  },
+  {
+    "basic": {
+      "productId": "1072002",
+      "productShortName": "Nøgne Ø Imperial Brown Ale",
+      "productLongName": "Nøgne Ø Imperial Brown Ale",
+      "alcoholContent": 7.5,
+      "volume": 0.5
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Sval aroma med fint preg av mørkt og gyllent malt, streif av kaffe, karamell og urter.",
+        "taste": "Kremet, nyansert med fint maltpreg, innslag av urter og tørket frukt. Lang."
+      }
+    },
+    "classification": {
+      "productTypeName": "Brown ale"
+    }
+  },
+  {
+    "basic": {
+      "productId": "5286702",
+      "productShortName": "Nøgne Ø #500",
+      "productLongName": "Nøgne Ø #500",
+      "alcoholContent": 10,
+      "volume": 0.5
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Maltpreget aroma med innslag av humle og urter, streif av røyk, karamell og sitrus.",
+        "taste": "Ren og rik med antydning til sødme, karamell og honning. Lang, bitter ettersmak."
+      }
+    },
+    "classification": {
+      "productTypeName": "India pale ale"
+    }
+  },
+  {
+    "basic": {
+      "productId": "5444402",
+      "productShortName": "Ægir Heimdall Gin",
+      "productLongName": "Ægir Heimdall Gin",
+      "alcoholContent": 46,
+      "volume": 0.5
+    },
+    "description": {
+      "characteristics": {
+        "odour": "God intensitet med preg av einebær, koriander og pomeransskall.",
+        "taste": "Frisk, ren og smaksrik med einebær, koriander og pomeransskall og et lett sitruspreg i avslutning."
+      }
+    },
+    "classification": {
+      "productTypeName": "Gin"
+    }
+  },
+  {
+    "basic": {
+      "productId": "5444602",
+      "productShortName": "Ægir Natt Imperial Porter",
+      "productLongName": "Ægir Natt Imperial Porter",
+      "alcoholContent": 10,
+      "volume": 0.33
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Preg av mørkt malt, kaffe og lakris.",
+        "taste": "Fyldig og rik, fint preg av sjokolade, ristet malt, kaffe og humle."
+      }
+    },
+    "classification": {
+      "productTypeName": "Porter & stout"
+    }
+  },
+  {
+    "basic": {
+      "productId": "5444702",
+      "productShortName": "Ægir Tors Hammar Barleywine",
+      "productLongName": "Ægir Tors Hammar Barleywine",
+      "alcoholContent": 13.2,
+      "volume": 0.33
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Sval aroma preget av mørkbrent malt, litt urter, vørterkake, kaffe og karamell.",
+        "taste": "Kremet, rik og sødmefull, preg av mørkt malt og karamell, innslag av krydder og kaffe, lang."
+      }
+    },
+    "classification": {
+      "productTypeName": "Barley wine"
+    }
+  },
+  {
+    "basic": {
+      "productId": "6391102",
+      "productShortName": "Ægir Lynchburg Natt Barrel-Aged",
+      "productLongName": "Ægir Lynchburg Natt Barrel-Aged Imperial Porter",
+      "alcoholContent": 10,
+      "volume": 0.33
+    },
+    "description": {
+      "characteristics": {
+        "odour": "Kompleks. Preg av mørkbrent malt, tørket frukt og kaffe over fat med toner av røyk.",
+        "taste": "Kremet, rik og sødmefull. Preg av mørkt malt, kaffe, tørket frukt og fat. Lang."
+      }
+    },
+    "classification": {
+      "productTypeName": "Porter & stout"
+    }
+  }
+]

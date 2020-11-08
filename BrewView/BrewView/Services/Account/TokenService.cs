@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BrewView.Contracts.User;
 using BrewView.Http;
 using BrewView.Models;
 using Xamarin.Essentials;

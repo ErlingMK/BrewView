@@ -1,4 +1,5 @@
 ﻿using System;
+using BrewView.Pages.SignIn.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -34,6 +35,15 @@ namespace BrewView.Pages.SignIn
             {
                 OnRegistrationCancelled(null, EventArgs.Empty);
                 return true;
+            }
+        }
+
+        private void CheckBox_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (BindingContext is ISignInViewModel context)
+            {
+                AppSettings.IsDemo = e.Value;
+                context.SignInCommand.RaiseCanExecuteChanged();
             }
         }
     }

@@ -5,11 +5,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:dataViewModels="clr-namespace:BrewView.DataViewModels;assembly=BrewView"
-             xmlns:search="clr-namespace:BrewView.Pages.Search;assembly=BrewView"
              mc:Ignorable="d"
              x:Class="BrewView.App">
     <Application.Resources>
-
         <DataTemplate x:Key="BrewListItem"
                       x:DataType="{x:Type dataViewModels:BrewViewModel}">
             <Grid Padding="10">
@@ -25,8 +23,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type search:ISearchPageViewModel}}, Path=NavigateToDetailsCommand}"
-                                          CommandParameter="{Binding }" />
+                    <TapGestureRecognizer Command="{Binding SelectedCommand}"
+                                          CommandParameter="{Binding .}" />
                 </Grid.GestureRecognizers>
 
                 <Image x:Name="brewImage"
@@ -37,13 +35,15 @@
                                    Color="Black"
                                    VerticalOptions="Center"
                                    HorizontalOptions="Center"
-                                   IsRunning="True"
+                                   IsRunning="False"
                                    IsVisible="False">
                     <ActivityIndicator.Triggers>
                         <DataTrigger TargetType="ActivityIndicator"
                                      Binding="{Binding Source={x:Reference brewImage}, Path=IsLoading}"
                                      Value="True">
                             <Setter Property="IsVisible"
+                                    Value="True" />
+                            <Setter Property="IsRunning"
                                     Value="True" />
                         </DataTrigger>
                     </ActivityIndicator.Triggers>
@@ -80,5 +80,12 @@
                        Text="{Binding Description.Characteristics.Taste}" />
             </Grid>
         </DataTemplate>
+
+        <Color x:Key="PrimaryColor">
+            #DFF6F6
+        </Color>
+        <Color x:Key="AccentColor">
+            #FD0C69
+        </Color>
     </Application.Resources>
 </Application>

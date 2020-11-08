@@ -32,6 +32,11 @@ namespace BrewView.Pages.SignIn.Views
             InitializeComponent();
         }
 
+        public void OnLostFocus(Element element)
+        {
+            Entry_OnCompleted(element, EventArgs.Empty);
+        }
+
         public ICommand ReturnCommand
         {
             get => (ICommand) GetValue(ReturnCommandProperty);
@@ -77,8 +82,9 @@ namespace BrewView.Pages.SignIn.Views
 
         private void ToggleLabel(bool shouldBeVisible = false)
         {
+            if (label.Opacity == 0) label.TranslationY = 10;
             label.FadeTo(shouldBeVisible ? 1 : 0, 150, Easing.CubicInOut);
-            label.TranslateTo(0, shouldBeVisible ? -10 : 0, 150, Easing.CubicInOut);
+            label.TranslateTo(0, shouldBeVisible ? 0 : 0, 150, Easing.CubicInOut);
         }
 
         private void Entry_OnCompleted(object sender, EventArgs e)

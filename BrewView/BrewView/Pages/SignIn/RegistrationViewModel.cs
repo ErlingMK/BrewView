@@ -2,12 +2,11 @@
 using System.ComponentModel;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using BrewView.Models;
+using BrewView.Contracts.User;
 using BrewView.Pages.SignIn.Abstractions;
 using BrewView.Services;
 using BrewView.Services.Account;
 using DIPS.Xamarin.UI.Commands;
-using DIPS.Xamarin.UI.Extensions;
 
 namespace BrewView.Pages.SignIn
 {
@@ -20,7 +19,8 @@ namespace BrewView.Pages.SignIn
         private string m_password;
         private string m_passwordVerification;
 
-        public RegistrationViewModel(IAccountService accountService, INavigationService navigationService, ISignInViewModel signInViewModel)
+        public RegistrationViewModel(IAccountService accountService, INavigationService navigationService,
+            ISignInViewModel signInViewModel)
         {
             m_accountService = accountService;
             m_navigationService = navigationService;
@@ -100,12 +100,12 @@ namespace BrewView.Pages.SignIn
             m_signInViewModel.IsBusy = true;
             try
             {
-                var response = await m_accountService.RegisterUser(new CredentialsModel {Email = Email, Password = Password});
+                var response = await m_accountService.RegisterUser(new CredentialsModel
+                    {Email = Email, Password = Password});
 
-                if (response.Succeeded) await m_navigationService.RemoveSignIn();
-                else
+                if (response.Succeeded)
                 {
-                    //TODO: Display error
+                    await m_navigationService.RemoveSignIn();
                 }
             }
             catch (Exception e)

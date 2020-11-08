@@ -5,25 +5,26 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BrewView.DataViewModels;
 using BrewView.Pages.Brew;
+using BrewView.Pages.Brew.List;
 using BrewView.Services;
 using BrewView.Services.Abstracts;
 using DIPS.Xamarin.UI.Extensions;
 using Xamarin.Forms;
-using ViewState = BrewView.Pages.Brew.ViewState;
+using ViewState = BrewView.Pages.Brew.List.ViewState;
 
 namespace BrewView.Pages.Search
 {
-    public class SearchPagePageViewModel : ISearchPageViewModel
+    public class SearchViewModel : ISearchViewModel
     {
         private readonly IExceptionHandler m_exceptionHandler;
-        private readonly IBrewPageViewModel m_brewPageViewModel;
+        private readonly IBrewListViewModel m_brewListViewModel;
         private readonly INavigationService m_navigationService;
         private bool m_isBusy;
 
-        public SearchPagePageViewModel(IExceptionHandler exceptionHandler, IBrewPageViewModel brewPageViewModel, INavigationService navigationService)
+        public SearchViewModel(IExceptionHandler exceptionHandler, IBrewListViewModel brewListViewModel, INavigationService navigationService)
         {
             m_exceptionHandler = exceptionHandler;
-            m_brewPageViewModel = brewPageViewModel;
+            m_brewListViewModel = brewListViewModel;
             m_navigationService = navigationService;
 
             SearchCommand = new Command<string>(async searchString => await Search(searchString));
@@ -65,9 +66,7 @@ namespace BrewView.Pages.Search
 
         private void NavigateToDetails(BrewViewModel brew)
         {
-            m_brewPageViewModel.CurrentBrew = brew;
-            m_brewPageViewModel.State = ViewState.Details;
-            m_navigationService.SwitchTabbedPage<BrewPage>();
+            m_brewListViewModel.State = ViewState.Details;
         }
     }
 }

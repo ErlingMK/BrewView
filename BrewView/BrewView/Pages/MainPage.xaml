@@ -7,6 +7,5 @@
              x:Class="BrewView.Pages.MainPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              android:TabbedPage.ToolbarPlacement="Bottom"
-             BarBackgroundColor="#161616"
-             BarTextColor="White">
+             BarBackgroundColor="White">
 </TabbedPage>

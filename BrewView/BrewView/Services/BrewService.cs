@@ -1,64 +1,81 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using BrewView.Contracts;
+using BrewView.DataViewModels;
 using BrewView.GraphQL;
-using BrewView.Http;
-using BrewView.Models;
+using BrewView.Services.Abstracts;
 using GraphQL;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace BrewView.Services
 {
     public class BrewService : IBrewService
     {
-        private GraphQLHttpClient m_client;
+        private readonly GraphQLHttpClient m_client;
+        private readonly IModelMapper m_modelMapper;
 
-        public BrewService(IGraphQLClientFactory clientFactory)
+        public BrewService(IGraphQLClientFactory clientFactory, IModelMapper modelMapper)
         {
+            m_modelMapper = modelMapper;
             m_client = clientFactory.GetClient();
         }
 
-        public async Task<BrewInfo> CreateBrew(Brew brew)
-        {
-            var brewInfo = new BrewInfo()
-            {
-                Gtin = brew.Logistics.Barcodes.First(b => b.IsMainGtin).Gtin,
-                ProductId = brew.Basic.ProductId
-            };
 
-            var graphQlRequest = new GraphQLRequest
-            {
-                Query = Mutations.CreateBrew,
-                Variables = new
-                {
-                    input = brewInfo
-                },
-                OperationName = "CreateAndReturnBrew",
-            };
-
-            var response = await m_client.SendMutationAsync<BrewInfoResponse>(graphQlRequest);
-            return response.Data.CreateBrew;
-        }
-
-        public async Task<AlcoholicEntity> FindBrewGtin(string gtin)
+        public async Task<BrewViewModel> FindBrew(string gtin)
         {
             var graphQlRequest = new GraphQLRequest
             {
                 Query = Queries.BrewByGtin,
-                Variables = new {gtin}
+                Variables = new {gtin},
             };
 
-            var response = await m_client.SendQueryAsync(graphQlRequest, () => new {alcoholicEntity = new AlcoholicEntity()});
-            return response.Data.alcoholicEntity;
+            var response = await m_client.SendQueryAsync(graphQlRequest, () => new {brewWithCode = new Brew()});
+            return m_modelMapper.Mapper(response.Data.brewWithCode);
+        }
+
+        public async Task<BrewViewModel> GetBrew(string productId)
+        {
+            var graphQlRequest = new GraphQLRequest()
+            {
+                Query = Queries.Brew,
+                Variables = new {productId}
+            };
+
+            var response = await m_client.SendQueryAsync(graphQlRequest, () => new { brew = new Brew() });
+            return m_modelMapper.Mapper(response.Data.brew);
+        }
+
+        public async Task<IList<BrewViewModel>> GetMyBrews()
+        {
+            var graphQlRequest = new GraphQLRequest
+            {
+                Query = Queries.Brews
+            };
+
+            var response = await m_client.SendQueryAsync(graphQlRequest, () => new {brews = new List<Brew>()});
+            return response.Data.brews.Select(brew => m_modelMapper.Mapper(brew)).ToList();
+        }
+
+        public async Task<bool> ToggleFavorite(string productId)
+        {
+            var graphQlRequest = new GraphQLRequest()
+            {
+                Query = Mutations.ToggleFavorite,
+                Variables = new {productId}
+            };
+
+            var response = await m_client.SendMutationAsync(graphQlRequest, () => new {makeFavorite = false});
+            return response.Data.makeFavorite;
         }
     }
 
     public interface IBrewService
     {
-        Task<BrewInfo> CreateBrew(Brew brew);
-        Task<AlcoholicEntity> FindBrewGtin(string gtin);
+        Task<BrewViewModel> FindBrew(string gtin);
+        Task<BrewViewModel> GetBrew(string productId);
+        Task<IList<BrewViewModel>> GetMyBrews();
+        Task<bool> ToggleFavorite(string productId);
     }
 }
