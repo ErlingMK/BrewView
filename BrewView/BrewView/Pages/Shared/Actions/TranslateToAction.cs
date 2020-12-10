@@ -12,11 +12,12 @@ namespace BrewView.Pages.Shared.Actions
         public double X { get; set; }
         public uint Duration { get; set; } = 250;
         public int Delay { get; set; } = 0;
-
+        public bool OffScreen { get; set; }
         protected override async void Invoke(VisualElement sender)
         {
+            var height = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Height / Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Density;
             await Task.Delay(Delay);
-            await sender.TranslateTo(X, Y, Duration, Easing.CubicInOut);
+            await sender.TranslateTo(X, OffScreen ? height : Y, Duration, Easing.CubicInOut);
         }
     }
 }

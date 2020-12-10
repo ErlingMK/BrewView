@@ -4,13 +4,11 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BrewView.DataViewModels;
-using BrewView.Pages.Brew;
 using BrewView.Pages.Brew.List;
 using BrewView.Services;
 using BrewView.Services.Abstracts;
 using DIPS.Xamarin.UI.Extensions;
 using Xamarin.Forms;
-using ViewState = BrewView.Pages.Brew.List.ViewState;
 
 namespace BrewView.Pages.Search
 {
@@ -28,7 +26,6 @@ namespace BrewView.Pages.Search
             m_navigationService = navigationService;
 
             SearchCommand = new Command<string>(async searchString => await Search(searchString));
-            NavigateToDetailsCommand = new Command<BrewViewModel>(NavigateToDetails);
         }
 
         public bool IsBusy
@@ -62,11 +59,6 @@ namespace BrewView.Pages.Search
             {
                 IsBusy = false;
             }
-        }
-
-        private void NavigateToDetails(BrewViewModel brew)
-        {
-            m_brewListViewModel.State = ViewState.Details;
         }
     }
 }

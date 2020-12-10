@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using BrewView.Contracts;
 using BrewView.Pages.Brew.Details;
+using BrewView.Pages.Brew.Details.Abstractions;
+using BrewView.Pages.Brew.List;
 using BrewView.Services;
 using DIPS.Xamarin.UI.Commands;
 using DIPS.Xamarin.UI.Extensions;
@@ -29,7 +31,11 @@ namespace BrewView.DataViewModels
 
         private async Task Navigate(BrewViewModel viewModel)
         {
-            await m_navigationService.Push<BrewDetailsPage, IBrewDetailsViewModel>(async model => await model.Load(viewModel));
+            await m_navigationService.Push<BrewListPage, BrewDetailsPage, IBrewDetailsViewModel>(async model =>
+            {
+                model.CurrentBrew = viewModel;
+                await model.Load(viewModel.Basic.ProductId);
+            });
         }
 
         public bool IsFavorite { get; set; } = true;

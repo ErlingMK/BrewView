@@ -6,9 +6,14 @@ namespace BrewView.Pages.Shared.Actions
     {
         public double FadeTo { get; set; }
         public uint Duration { get; set; } = 250;
-        protected override void Invoke(VisualElement sender)
+        public bool ShouldBeVisibleAfter { get; set; }
+        public bool ShouldBeVisibleBefore { get; set; }
+
+        protected override async void Invoke(VisualElement sender)
         {
-            sender.FadeTo(FadeTo, Duration, Easing.CubicInOut);
+            sender.IsVisible = ShouldBeVisibleBefore;
+            await sender.FadeTo(FadeTo, Duration, Easing.CubicInOut);
+            sender.IsVisible = ShouldBeVisibleAfter;
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using BrewView.Contracts;
 using BrewView.DataViewModels;
 using BrewView.GraphQL;
+using BrewView.Pages.Brew.Details;
+using BrewView.Pages.Brew.Details.ViewModels;
 using BrewView.Services.Abstracts;
 using GraphQL;
 using GraphQL.Client.Abstractions;
@@ -23,7 +25,7 @@ namespace BrewView.Services
         }
 
 
-        public async Task<BrewViewModel> FindBrew(string gtin)
+        public async Task<string> FindBrew(string gtin)
         {
             var graphQlRequest = new GraphQLRequest
             {
@@ -31,8 +33,8 @@ namespace BrewView.Services
                 Variables = new {gtin},
             };
 
-            var response = await m_client.SendQueryAsync(graphQlRequest, () => new {brewWithCode = new Brew()});
-            return m_modelMapper.Mapper(response.Data.brewWithCode);
+            var response = await m_client.SendQueryAsync(graphQlRequest, () => new {Id = ""});
+            return response.Data.Id;
         }
 
         public async Task<BrewViewModel> GetBrew(string productId)
@@ -69,13 +71,15 @@ namespace BrewView.Services
             var response = await m_client.SendMutationAsync(graphQlRequest, () => new {makeFavorite = false});
             return response.Data.makeFavorite;
         }
-    }
 
-    public interface IBrewService
-    {
-        Task<BrewViewModel> FindBrew(string gtin);
-        Task<BrewViewModel> GetBrew(string productId);
-        Task<IList<BrewViewModel>> GetMyBrews();
-        Task<bool> ToggleFavorite(string productId);
+        public Task<IList<BrewNoteViewModel>> GetBrewNotes(string productId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> AddNote(BrewNoteViewModel brewNoteViewModel)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

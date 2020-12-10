@@ -5,20 +5,59 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:actions="clr-namespace:BrewView.Pages.Shared.Actions;assembly=BrewView"
+             xmlns:valueConverters="http://dips.xamarin.ui.com"
              mc:Ignorable="d"
              x:Class="BrewView.Pages.Shared.BusyView"
+             x:Name="ContentView"
              InputTransparent="True">
     <Grid>
-        <Grid.Triggers>
-            <DataTrigger TargetType="Grid"
-                         Binding="{Binding IsBusy}"
-                         Value="True">
-                <DataTrigger.ExitActions>
-                    <actions:FadeToAction FadeTo="0" Duration="500" />
-                </DataTrigger.ExitActions>
-            </DataTrigger>
-        </Grid.Triggers>
-        <BoxView Color="White" />
+        <BoxView Color="White">
+            <BoxView.Triggers>
+                <DataTrigger TargetType="BoxView"
+                             Value="True"
+                             Binding="{Binding IsBusy}">
+
+                    <DataTrigger.EnterActions>
+                        <actions:FadeToAction FadeTo="1"
+                                              Duration="0"
+                                              ShouldBeVisibleBefore="True"
+                                              ShouldBeVisibleAfter="True" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <actions:FadeToAction FadeTo="0"
+                                              Duration="500"
+                                              ShouldBeVisibleBefore="True"
+                                              ShouldBeVisibleAfter="False" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </BoxView.Triggers>
+        </BoxView>
+
+
+        <BoxView Color="DimGray"
+                 InputTransparent="False"
+                 Opacity="0">
+            <BoxView.Triggers>
+                <DataTrigger TargetType="BoxView"
+                             Value="True"
+                             Binding="{Binding Source={x:Reference ContentView}, Path=ShowOverlay}">
+
+                    <DataTrigger.EnterActions>
+                        <actions:FadeToAction FadeTo=".5"
+                                              ShouldBeVisibleBefore="True"
+                                              ShouldBeVisibleAfter="True" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <actions:FadeToAction FadeTo="0"
+                                              ShouldBeVisibleBefore="True"
+                                              ShouldBeVisibleAfter="False" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </BoxView.Triggers>
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOverlayTapped" />
+            </BoxView.GestureRecognizers>
+        </BoxView>
 
         <ActivityIndicator VerticalOptions="Center"
                            HorizontalOptions="Center"

@@ -70,12 +70,16 @@ namespace BrewView.Services
             }
         }
 
-        public async Task Push<TPage, TViewModel>(Action<TViewModel> beforeAction) where TPage : Page
+        public async Task Push<TRoot, TPage, TViewModel>(Action<TViewModel> beforeAction = null) where TPage : Page
         {
-            var navigationPage = m_serviceContainer.GetInstance<NavigationPage>();
+            var navigationPage = m_serviceContainer.GetInstance<NavigationPage>(typeof(TRoot).Name);
+
             var page = m_serviceContainer.GetInstance<TPage>();
             var viewModel = m_serviceContainer.GetInstance<TViewModel>();
-            beforeAction.Invoke(viewModel);
+
+            page.BindingContext ??= viewModel;
+
+            beforeAction?.Invoke(viewModel);
 
             await navigationPage.PushAsync(page);
         }
@@ -89,6 +93,6 @@ namespace BrewView.Services
         Task ShowSignIn(bool animate = true);
         Task<ZXingScannerPage> PushScanModal(MobileBarcodeScanningOptions options = null);
         Task PopScanModal();
-        Task Push<TPage, TViewModel>(Action<TViewModel> beforeAction) where TPage : Page;
+        Task Push<TRoot, TPage, TViewModel>(Action<TViewModel> beforeAction = null) where TPage : Page;
     }
 }

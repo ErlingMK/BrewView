@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shared="clr-namespace:BrewView.Pages.Shared;assembly=BrewView"
+             xmlns:resources="clr-namespace:BrewView.Pages.Brew.Resources;assembly=BrewView"
+             xmlns:details="clr-namespace:BrewView.Pages.Brew.Details;assembly=BrewView"
+             xmlns:actions="clr-namespace:BrewView.Pages.Shared.Actions;assembly=BrewView"
+             xmlns:effects="clr-namespace:BrewView.Effects;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.Brew.Details.Abstractions;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.Brew.Details.Views.AddNoteView"
+             x:DataType="{x:Type abstractions:IAddNoteViewModel}"
+             IsVisible="False"
+             Opacity="0">
+
+    <ContentView.Triggers>
+        <DataTrigger TargetType="ContentView"
+                     Binding="{Binding Show}"
+                     Value="True">
+            <DataTrigger.EnterActions>
+                <actions:TranslateToAction Y="0"
+                                           Duration="400" />
+                <actions:FadeToAction Duration="300"
+                                      FadeTo="1"
+                                      ShouldBeVisibleAfter="True"
+                                      ShouldBeVisibleBefore="True" />
+            </DataTrigger.EnterActions>
+            <DataTrigger.ExitActions>
+                <actions:TranslateToAction OffScreen="True"
+                                           Duration="400" />
+                <actions:FadeToAction Duration="300"
+                                      FadeTo="0"
+                                      ShouldBeVisibleAfter="False"
+                                      ShouldBeVisibleBefore="True" />
+            </DataTrigger.ExitActions>
+        </DataTrigger>
+    </ContentView.Triggers>
+
+    <Frame CornerRadius="10"
+           Padding="10">
+        <Frame.Resources>
+            <Style TargetType="Button">
+                <Setter Property="TextColor"
+                        Value="White" />
+                <Setter Property="BackgroundColor"
+                        Value="Teal" />
+            </Style>
+        </Frame.Resources>
+        <Grid RowDefinitions="Auto, Auto, 1, Auto, Auto"
+              ColumnDefinitions="*,*">
+            <Label Text="Rating"
+                   TextColor="DarkGray" />
+            <Label Grid.Column="1"
+                   Grid.Row="1"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   TextColor="DarkGray"
+                   Text="{Binding CreatedTime, StringFormat='{0:dd.MM.yy HH.mm}'}" />
+            <shared:RatingView Grid.Row="1"
+                               WidthRequest="175"
+                               HeightRequest="30"
+                               MaxRating="6"
+                               Rating="{Binding Rating}" />
+            <BoxView Grid.Row="2"
+                     Grid.ColumnSpan="2"
+                     Color="Black"
+                     HeightRequest="1" />
+            <Editor Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    IsTextPredictionEnabled="True"
+                    AutoSize="TextChanges"
+                    Margin="0,10,0,20"
+                    Text="{Binding Note, Mode=TwoWay}"
+                    Placeholder="{x:Static resources:BrewPageLocalizedStrings.NotePlaceholder}">
+                <Editor.Triggers>
+                    <DataTrigger TargetType="Editor"
+                                 Binding="{Binding Show}"
+                                 Value="True">
+                        <DataTrigger.EnterActions>
+                            <actions:FocusAction />
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </Editor.Triggers>
+                <Editor.Effects>
+                    <effects:TextFieldWithoutBorderEffect />
+                </Editor.Effects>
+            </Editor>
+
+            <Button Grid.Row="4"
+                    Text="{x:Static resources:BrewPageLocalizedStrings.Cancel}"
+                    Command="{Binding CancelCommand, Mode=OneTime}"
+                    BackgroundColor="Teal" />
+            <Button Grid.Row="4"
+                    Grid.Column="1"
+                    Command="{Binding AddCommand, Mode=OneTime}"
+                    Text="{x:Static resources:BrewPageLocalizedStrings.Add}"
+                    BackgroundColor="Teal" />
+        </Grid>
+    </Frame>
+</ContentView>

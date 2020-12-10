@@ -63,6 +63,9 @@
     <PackageReference Include="Microcharts.Forms">
       <Version>0.9.5.9</Version>
     </PackageReference>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>2.80.2</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="Xamarin.Forms.PancakeView">
@@ -77,7 +80,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\EntryEffect.cs" />
+    <Compile Include="Effects\TextFieldWithoutBorderEffect.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\RatingContentView.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

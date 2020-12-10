@@ -1,12 +1,12 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace BrewView.Pages.Shared.Scan
+namespace BrewView.Pages.Brew.Details.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ScanButton : ContentView
+    public partial class DescriptionView : ContentView
     {
-        public ScanButton()
+        public DescriptionView()
         {
             InitializeComponent();
         }

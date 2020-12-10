@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:viewModels="clr-namespace:BrewView.Pages.Brew.Details.ViewModels;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.Brew.Details.Abstractions;assembly=BrewView"
+             xmlns:fonts="clr-namespace:BrewView.Resources.Fonts;assembly=BrewView"
+             xmlns:resources="clr-namespace:BrewView.Pages.Brew.Resources;assembly=BrewView"
+             mc:Ignorable="d"
+             x:DataType="{x:Type abstractions:IBrewDetailsViewModel}"
+             x:Class="BrewView.Pages.Brew.Details.Views.DescriptionView">
+
+    <ContentView.Resources>
+        <Style x:Key="IncrementButton"
+               TargetType="Button">
+            <Setter Value="{x:Static fonts:FontIcons.Solid}"
+                    Property="FontFamily" />
+            <Setter Property="Padding"
+                    Value="10" />
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="TextColor"
+                    Value="Teal" />
+            <Setter Property="BorderColor"
+                    Value="Teal" />
+            <Setter Property="BorderWidth"
+                    Value="1" />
+            <Setter Property="CornerRadius"
+                    Value="5" />
+            <Setter Property="BackgroundColor"
+                    Value="White" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto,.5,Auto,.5,Auto"
+          RowSpacing="0">
+
+        <StackLayout Grid.Row="0"
+                     BindableLayout.ItemsSource="{Binding Charts}"
+                     Orientation="Horizontal"
+                     HorizontalOptions="CenterAndExpand"
+                     Spacing="20"
+                     Margin="5">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type viewModels:ChartWithLabel}">
+                    <Grid RowDefinitions="Auto, Auto"
+                          ColumnDefinitions="*,Auto"
+                          ColumnSpacing="0"
+                          RowSpacing="0">
+                        <forms:ChartView Grid.Column="0"
+                                         Chart="{Binding Chart}" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Value}"
+                               FontSize="12"
+                               VerticalOptions="Center" />
+                        <Label Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               FontSize="12"
+                               Text="{Binding Description}" />
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+
+        <BoxView Grid.Row="1"
+                 Style="{StaticResource Separator}" />
+
+        <StackLayout Grid.Row="2"
+                     Orientation="Horizontal"
+                     Padding="10,5"
+                     BackgroundColor="{StaticResource PrimaryColor}">
+            <Label Text="{x:Static resources:BrewPageLocalizedStrings.RegisteredBuys}"
+                   VerticalOptions="Center"
+                   FontSize="16" />
+            <Label Text="5"
+                   FontSize="16"
+                   TextColor="{StaticResource AccentColor}"
+                   TextDecorations="Underline"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center" />
+            <Button Style="{StaticResource IncrementButton}"
+                    Text="{x:Static fonts:FontIcons.Minus}"
+                    HorizontalOptions="EndAndExpand" />
+            <Button Style="{StaticResource IncrementButton}"
+                    Text="{x:Static fonts:FontIcons.Plus}"
+                    HorizontalOptions="End" />
+        </StackLayout>
+
+        <BoxView Grid.Row="3"
+                 Style="{StaticResource Separator}" />
+
+        <Grid Grid.Row="4"
+              RowDefinitions="Auto,Auto,Auto"
+              ColumnDefinitions="Auto, .5, *"
+              Margin="5"
+              Padding="5,0">
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="VerticalOptions"
+                            Value="Center" />
+                </Style>
+            </Grid.Resources>
+
+            <Label Text="{x:Static resources:BrewPageLocalizedStrings.Taste}"
+                   TextColor="DarkGray" />
+            <BoxView Grid.Column="1"
+                     Color="DarkGray"
+                     WidthRequest=".5" />
+            <Label Grid.Column="2"
+                   TextColor="Black"
+                   Text="{Binding CurrentBrew.Description.Characteristics.Taste}" />
+
+            <Label Grid.Row="1"
+                   Text="{x:Static resources:BrewPageLocalizedStrings.Odour}"
+                   TextColor="DarkGray" />
+            <BoxView Grid.Row="1"
+                     Grid.Column="1"
+                     Color="DarkGray"
+                     WidthRequest=".5" />
+            <Label Grid.Row="1"
+                   Grid.Column="2"
+                   TextColor="Black"
+                   Text="{Binding CurrentBrew.Description.Characteristics.Odour}" />
+
+            <Label Grid.Row="2"
+                   Text="{x:Static resources:BrewPageLocalizedStrings.Colour}"
+                   TextColor="DarkGray" />
+            <BoxView Grid.Row="2"
+                     Grid.Column="1"
+                     Color="DarkGray"
+                     WidthRequest=".5" />
+            <Label Grid.Row="2"
+                   Grid.Column="2"
+                   TextColor="Black"
+                   Text="{Binding CurrentBrew.Description.Characteristics.Colour}" />
+        </Grid>
+    </Grid>
+</ContentView>

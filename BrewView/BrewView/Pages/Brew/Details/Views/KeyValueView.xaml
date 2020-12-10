@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Name="codeBehind"
-             x:Class="BrewView.Pages.Brew.Details.KeyValueView">
+             x:Class="BrewView.Pages.Brew.Details.Views.KeyValueView">
 
     <StackLayout Spacing="-4">
         <Label Text="{Binding Source={x:Reference codeBehind}, Path=Key}" 
@@ -14,6 +14,8 @@
                FontSize="12"/>
         <Label Text="{Binding Source={x:Reference codeBehind}, Path=Value}"
                FontAttributes="Bold"
-               FontSize="16"/>
+               FontSize="16"
+               LineBreakMode="TailTruncation"/>
+        <!--Without truncation it breaks the outer grid. How to fix?-->
     </StackLayout>
 </ContentView>

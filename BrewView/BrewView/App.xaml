@@ -81,6 +81,15 @@
             </Grid>
         </DataTemplate>
 
+
+        <Style x:Key="Separator"
+               TargetType="BoxView">
+            <Setter Property="Color"
+                    Value="Black" />
+            <Setter Property="HeightRequest"
+                    Value=".5" />
+        </Style>
+
         <Color x:Key="PrimaryColor">
             #DFF6F6
         </Color>

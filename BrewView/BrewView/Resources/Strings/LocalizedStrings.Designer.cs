@@ -97,6 +97,15 @@ namespace BrewView.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan a barcode.
+        /// </summary>
+        public static string ScanPageTitle {
+            get {
+                return ResourceManager.GetString("ScanPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sign in.
         /// </summary>
         public static string SignIn {

@@ -2,6 +2,8 @@
 using BrewView.Http;
 using BrewView.Pages;
 using BrewView.Pages.Brew.Details;
+using BrewView.Pages.Brew.Details.Abstractions;
+using BrewView.Pages.Brew.Details.ViewModels;
 using BrewView.Pages.Brew.List;
 using BrewView.Pages.Search;
 using BrewView.Pages.Shared.Scan;
@@ -28,18 +30,26 @@ namespace BrewView
 
         private MainPage RegisterMainPage(IServiceFactory factory)
         {
-            var mainPage = new MainPage();
+            var mainPage = new MainPage
+            {
+                SelectedTabColor = Color.Black,
+                BarBackgroundColor = Color.FromHex("#DFF6F6")
+            };
 
-            var navigationPage = factory.GetInstance<NavigationPage>();
-            navigationPage.BarTextColor = Color.Black;
-            navigationPage.IconImageSource = new FontImageSource
-                {FontFamily = FontIcons.Solid, Glyph = FontIcons.WineBottle};
+            var brewListPage = factory.GetInstance<NavigationPage>(nameof(BrewListPage));
+            brewListPage.BarTextColor = Color.Black;
+            brewListPage.IconImageSource = new FontImageSource {FontFamily = FontIcons.Solid, Glyph = FontIcons.WineBottle};
+
+            var scannerPage = factory.GetInstance<NavigationPage>(nameof(ScannerPage));
+            scannerPage.BarTextColor = Color.Black;
+            scannerPage.IconImageSource = new FontImageSource {FontFamily = FontIcons.Solid, Glyph = FontIcons.Camera};
 
             var searchPage = factory.GetInstance<SearchPage>();
-            searchPage.IconImageSource = new FontImageSource {FontFamily = FontIcons.Solid, Glyph = FontIcons.Search};
+            searchPage.IconImageSource = new FontImageSource { FontFamily = FontIcons.Solid, Glyph = FontIcons.Search };
 
-            mainPage.Children.Add(navigationPage);
-            mainPage.Children.Add(searchPage);
+            mainPage.Children.Add(brewListPage);
+            //mainPage.Children.Add(searchPage);
+            mainPage.Children.Add(scannerPage);
 
             return mainPage;
         }
@@ -48,14 +58,19 @@ namespace BrewView
         {
             serviceRegistry.Register(RegisterMainPage, new PerContainerLifetime());
 
-            serviceRegistry.Register(factory => new BrewDetailsPage
-                {BindingContext = factory.GetInstance<IBrewDetailsViewModel>()});
+            serviceRegistry.Register(factory => new BrewDetailsPage());
 
             serviceRegistry.Register(factory => new BrewListPage
                 {BindingContext = factory.GetInstance<IBrewListViewModel>()});
 
+            serviceRegistry.Register(
+                factory => new ScannerPage {BindingContext = factory.GetInstance<IScanViewModel>()});
+
             serviceRegistry.Register(factory => new NavigationPage(factory.GetInstance<BrewListPage>()),
-                new PerContainerLifetime());
+                nameof(BrewListPage), new PerContainerLifetime());
+
+            serviceRegistry.Register(factory => new NavigationPage(factory.GetInstance<ScannerPage>()),
+                nameof(ScannerPage), new PerContainerLifetime());
 
             serviceRegistry.Register(fac => new SearchPage {BindingContext = fac.GetInstance<ISearchViewModel>()});
 
@@ -68,11 +83,13 @@ namespace BrewView
 
             serviceRegistry.Register<ISignInViewModel, SignInViewModel>(new PerContainerLifetime());
 
-            serviceRegistry.Register<IScanViewModel, ScanViewModel>();
+            serviceRegistry.Register<IScanViewModel, ScanViewModel>(new PerContainerLifetime());
 
-            serviceRegistry.Register<IBrewDetailsViewModel, BrewDetailsViewModel>(new PerContainerLifetime());
+            serviceRegistry.Register<IBrewDetailsViewModel, BrewDetailsViewModel>();
 
             serviceRegistry.Register<IBrewListViewModel, BrewListViewModel>(new PerContainerLifetime());
+
+            serviceRegistry.Register<IAddNoteViewModel, AddNoteViewModel>();
         }
 
         private void RegisterServices(IServiceRegistry serviceRegistry)

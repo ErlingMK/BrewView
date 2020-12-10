@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:details="clr-namespace:BrewView.Pages.Brew.Details;assembly=BrewView"
+             xmlns:shared="clr-namespace:BrewView.Pages.Shared;assembly=BrewView"
+             xmlns:resources="clr-namespace:BrewView.Pages.Brew.Resources;assembly=BrewView"
+             xmlns:fonts="clr-namespace:BrewView.Resources.Fonts;assembly=BrewView"
+             xmlns:viewModels="clr-namespace:BrewView.Pages.Brew.Details.ViewModels;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.Brew.Details.Abstractions;assembly=BrewView"
+             xmlns:dataViewModels="clr-namespace:BrewView.DataViewModels;assembly=BrewView"
+             mc:Ignorable="d"
+             x:Class="BrewView.Pages.Brew.Details.Views.NotesView"
+             x:DataType="{x:Type abstractions:IBrewDetailsViewModel}">
+
+    <Grid RowDefinitions="Auto,*, 35">
+        <StackLayout Orientation="Horizontal"
+                     Padding="10,0,5,0">
+            <Label FontAttributes="Italic"
+                   Text="{Binding BrewNotes.Count, StringFormat={x:Static resources:BrewPageLocalizedStrings.NumberOfComments}}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand" />
+            <Label HorizontalOptions="End"
+                   Opacity=".8"
+                   Padding="10,5"
+                   TextColor="Teal"
+                   FontSize="25"
+                   IsVisible="{Binding HasNotes}"
+                   FontFamily="{x:Static fonts:FontIcons.Solid}"
+                   Text="{x:Static fonts:FontIcons.Plus}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddNoteCommand, Mode=OneTime}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1"
+                     BindableLayout.ItemsSource="{Binding BrewNotes}">
+
+            <BindableLayout.EmptyView>
+                <StackLayout Orientation="Vertical"
+                             Padding="10,50">
+                    <Label Text="{x:Static resources:BrewPageLocalizedStrings.NoNotes}"
+                           FontSize="15"
+                           HorizontalOptions="Center" />
+                    <Button Opacity=".8"
+                            Padding="5"
+                            TextColor="Teal"
+                            FontSize="25"
+                            BackgroundColor="White"
+                            FontFamily="{x:Static fonts:FontIcons.Solid}"
+                            Text="{x:Static fonts:FontIcons.Plus}"
+                            Command="{Binding AddNoteCommand, Mode=OneTime}" />
+                </StackLayout>
+            </BindableLayout.EmptyView>
+
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type dataViewModels:BrewNoteViewModel}">
+                    <Grid RowDefinitions="20, 1, *"
+                          ColumnDefinitions="*, *"
+                          Padding="10">
+                        <Label Text="{Binding CreatedTime, StringFormat='{0:dd.MM.yy HH.mm}'}"
+                               TextColor="DimGray"
+                               FontSize="15" />
+                        <shared:RatingView Grid.Column="1"
+                                           MaxRating="6"
+                                           IsSettable="False"
+                                           Rating="{Binding Rating}" />
+                        <BoxView Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 Color="Black"
+                                 Margin="-10,0" />
+                        <Label Grid.Row="2"
+                               Grid.ColumnSpan="2"
+                               Text="{Binding Note}" />
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+
+        <BoxView HeightRequest="35"
+                 Grid.Row="2"/>
+    </Grid>
+
+</ContentView>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BrewView.Contracts;
 using BrewView.DataViewModels;
+using BrewView.Pages.Brew.Details;
+using BrewView.Pages.Brew.Details.ViewModels;
 using BrewView.Services.Abstracts;
 
 namespace BrewView.Services.Mocks
@@ -17,9 +19,9 @@ namespace BrewView.Services.Mocks
             m_mapper = mapper;
         }
 
-        public Task<BrewViewModel> FindBrew(string gtin)
+        public Task<string> FindBrew(string gtin)
         {
-            throw new NotImplementedException();
+            return Task.FromResult("4827358932");
         }
 
         public async Task<BrewViewModel> GetBrew(string productId)
@@ -39,6 +41,23 @@ namespace BrewView.Services.Mocks
         }
 
         public Task<bool> ToggleFavorite(string productId)
+        {
+            return Task.FromResult(true);
+        }
+
+        public async Task<IList<BrewNoteViewModel>> GetBrewNotes(string productId)
+        {
+            await Task.Delay(2000);
+            return new List<BrewNoteViewModel>()
+            {
+                new BrewNoteViewModel(DateTime.Today.AddDays(-20), 6, "Fette fantastisk!!!"),
+                new BrewNoteViewModel(DateTime.Today.AddDays(-100), 5, "Ikke like god denne gangen av en eller annen grunn?\n Neste linje her.\n\nEnda en!"),
+                new BrewNoteViewModel(DateTime.Today.AddDays(-2), 4, "Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!Fette fantastisk!!!"),
+                new BrewNoteViewModel(DateTime.Today.AddDays(-203), 5, "Fette fantastisk!!!\nFette fantastisk!!!\nFette fantastisk!!!\nFette fantastisk!!!\nFette fantastisk!!!\nFette fantastisk!!!\n"),
+            };
+        }
+
+        public Task<bool> AddNote(BrewNoteViewModel brewNoteViewModel)
         {
             return Task.FromResult(true);
         }

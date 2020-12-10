@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:BrewView.Pages.Brew.Details.Views;assembly=BrewView"
+             xmlns:resources="clr-namespace:BrewView.Pages.Brew.Resources;assembly=BrewView"
+             xmlns:valueConverters="http://dips.xamarin.ui.com"
+             xmlns:fonts="clr-namespace:BrewView.Resources.Fonts;assembly=BrewView"
+             xmlns:shared="clr-namespace:BrewView.Pages.Shared;assembly=BrewView"
+             xmlns:abstractions="clr-namespace:BrewView.Pages.Brew.Details.Abstractions;assembly=BrewView"
+             mc:Ignorable="d"
+             x:DataType="{x:Type abstractions:IBrewDetailsViewModel}"
+             x:Class="BrewView.Pages.Brew.Details.Views.BrewCard">
+
+    <Grid Padding="10"
+          ColumnSpacing="10"
+          RowDefinitions="Auto, Auto, Auto, Auto, Auto, 40"
+          ColumnDefinitions="60, Auto, *"
+          RowSpacing="5">
+
+        <ImageButton Grid.Row="0"
+                     Grid.Column="0"
+                     Grid.RowSpan="5"
+                     BackgroundColor="Transparent"
+                     Source="{Binding CurrentBrew.SmallImageUrl}" />
+
+
+        <views:KeyValueView Grid.Row="0"
+                            Grid.Column="1"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Type}"
+                            Value="{Binding CurrentBrew.Classification.ProductTypeName}" />
+
+        <views:KeyValueView Grid.Row="0"
+                            Grid.Column="2"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Price}"
+                            Value="{Binding CurrentBrew.Prices[0].SalesPrice, StringFormat='{0}kr'}" />
+
+        <views:KeyValueView Grid.Row="1"
+                            Grid.Column="1"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Alcohol}"
+                            Value="{Binding CurrentBrew.Basic.AlcoholContent}" />
+
+        <views:KeyValueView Grid.Row="1"
+                            Grid.Column="2"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Volume}"
+                            Value="{Binding CurrentBrew.Basic.Volume}" />
+
+        <views:KeyValueView Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Manufacturer}"
+                            Value="{Binding CurrentBrew.Logistics.ManufacturerName}" />
+
+        <views:KeyValueView Grid.Row="3"
+                            Grid.Column="1"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Country}"
+                            Value="{Binding CurrentBrew.Origins.Origin.Country}" />
+
+        <views:KeyValueView Grid.Row="4"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Key="{x:Static resources:BrewPageLocalizedStrings.Name}"
+                            Value="{Binding CurrentBrew.Basic.ProductLongName}" />
+
+        <Label x:Name="HeartLabel"
+               Grid.Row="0"
+               Grid.Column="2"
+               FontSize="30"
+               HorizontalOptions="End"
+               TextColor="{Binding CurrentBrew.IsFavorite, Converter={valueConverters:BoolToObjectConverter TrueObject={StaticResource AccentColor}, FalseObject={x:Static Color.White}}, Mode=OneWay}"
+               WidthRequest="45"
+               HorizontalTextAlignment="Center"
+               Padding="5"
+               FontFamily="{x:Static fonts:FontIcons.Solid}"
+               Text="{x:Static fonts:FontIcons.Heart}">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="HeartTapped"
+                                      Command="{Binding MakeFavoriteCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+
+        <StackLayout Orientation="Horizontal"
+                     Grid.Row="5"
+                     Grid.ColumnSpan="3"
+                     Margin="0,5,0,0">
+            <Label Text="{x:Static resources:BrewPageLocalizedStrings.AverageRating}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   TextColor="Black" />
+            <BoxView Color="DarkGray"
+                     WidthRequest=".5" />
+            <shared:RatingView HeightRequest="30"
+                               HorizontalOptions="FillAndExpand"
+                               MaxRating="6" />
+        </StackLayout>
+
+    </Grid>
+</ContentView>

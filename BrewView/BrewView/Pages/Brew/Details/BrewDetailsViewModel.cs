@@ -4,27 +4,35 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BrewView.DataViewModels;
-using BrewView.Services;
+using BrewView.Pages.Brew.Details.Abstractions;
+using BrewView.Pages.Brew.Details.ViewModels;
+using BrewView.Services.Abstracts;
 using DIPS.Xamarin.UI.Commands;
 using DIPS.Xamarin.UI.Extensions;
 using LightInject;
 using Microcharts;
 using SkiaSharp;
+using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace BrewView.Pages.Brew.Details
 {
     public class BrewDetailsViewModel : IBrewDetailsViewModel
     {
         private readonly IServiceContainer m_serviceContainer;
+        private IAddNoteViewModel m_addNoteViewModel;
         private BrewViewModel m_currentBrew;
-        private Chart m_descriptionChart;
+        private bool m_hasNotes;
         private bool m_isBusy;
 
         public BrewDetailsViewModel(IServiceContainer serviceContainer)
         {
             m_serviceContainer = serviceContainer;
+
             MakeFavoriteCommand = new AsyncCommand(MakeFavorite);
+            AddNoteCommand = new Command(AddNote);
         }
 
         public IAsyncCommand MakeFavoriteCommand { get; }
@@ -36,14 +44,25 @@ namespace BrewView.Pages.Brew.Details
         }
 
 
-        public async Task Load(BrewViewModel brewViewModel)
+        public ObservableCollection<BrewNoteViewModel> BrewNotes { get; } =
+            new ObservableCollection<BrewNoteViewModel>();
+
+        public ICommand AddNoteCommand { get; }
+
+        public async Task Load(string productId)
         {
             IsBusy = true;
             try
             {
-                var brew = await m_serviceContainer.GetInstance<IBrewService>().GetBrew(brewViewModel.Basic.ProductId);
+                var brewService = m_serviceContainer.GetInstance<IBrewService>();
+                var brewNotesTask = brewService.GetBrewNotes(productId);
+                var brew = await brewService.GetBrew(productId);
                 CurrentBrew = brew;
                 CreateCharts();
+
+                var notes = await brewNotesTask;
+                notes.ForEach(model => BrewNotes.Add(model));
+                HasNotes = notes.Any();
             }
             catch (Exception e)
             {
@@ -55,13 +74,19 @@ namespace BrewView.Pages.Brew.Details
             }
         }
 
-        public ObservableCollection<ChartWithLabel> Charts { get; set; } = new ObservableCollection<ChartWithLabel>();
-
-        public Chart DescriptionChart
+        public IAddNoteViewModel AddNoteViewModel
         {
-            get => m_descriptionChart;
-            set => PropertyChanged.RaiseWhenSet(ref m_descriptionChart, value);
+            get => m_addNoteViewModel;
+            set => PropertyChanged.RaiseWhenSet(ref m_addNoteViewModel, value);
         }
+
+        public bool HasNotes
+        {
+            get => m_hasNotes;
+            set => PropertyChanged.RaiseWhenSet(ref m_hasNotes, value);
+        }
+
+        public ObservableCollection<ChartWithLabel> Charts { get; } = new ObservableCollection<ChartWithLabel>();
 
         public BrewViewModel CurrentBrew
         {
@@ -70,6 +95,26 @@ namespace BrewView.Pages.Brew.Details
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void AddNote()
+        {
+            AddNoteViewModel = new AddNoteViewModel {OnAddAction = OnAddAction, Show = true};
+        }
+
+        private async void OnAddAction(BrewNoteViewModel note)
+        {
+            try
+            {
+                var response = await m_serviceContainer.GetInstance<IBrewService>().AddNote(note);
+                if (!response) return;
+                HasNotes = true;
+                BrewNotes.Add(note);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         private void CreateCharts()
         {
@@ -83,31 +128,30 @@ namespace BrewView.Pages.Brew.Details
 
         private void CreateDescriptionChart(string property)
         {
-            if (float.TryParse(CurrentBrew.Description.GetPropertyValue(property), out var result))
-            {
-                var pieChart = new PieChart()
-                {
-                    MaxValue = 12,
-                    Entries = new List<ChartEntry>()
-                    {
-                        new ChartEntry(result)
-                        {
-                            Color = SKColor.Parse("#FD0C69")
-                        },
-                        new ChartEntry(12 - result)
-                        {
-                            Color = SKColors.WhiteSmoke
-                        }
-                    }
-                };
+            if (!float.TryParse(CurrentBrew.Description.GetPropertyValue(property), out var result)) return;
 
-                Charts.Add(new ChartWithLabel()
+            var pieChart = new PieChart
+            {
+                MaxValue = 12,
+                Entries = new List<ChartEntry>
                 {
-                    Description = property,
-                    Chart = pieChart,
-                    Value = result
-                });
-            }
+                    new ChartEntry(result)
+                    {
+                        Color = SKColor.Parse("#FD0C69")
+                    },
+                    new ChartEntry(12 - result)
+                    {
+                        Color = SKColors.WhiteSmoke
+                    }
+                }
+            };
+
+            Charts.Add(new ChartWithLabel
+            {
+                Description = property,
+                Chart = pieChart,
+                Value = result
+            });
         }
 
         private async Task MakeFavorite()
@@ -120,25 +164,8 @@ namespace BrewView.Pages.Brew.Details
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
             }
         }
-    }
-
-    public interface IBrewDetailsViewModel : INotifyPropertyChanged
-    {
-        bool IsBusy { get; }
-        BrewViewModel CurrentBrew { get; set; }
-        public IAsyncCommand MakeFavoriteCommand { get; }
-
-        Chart DescriptionChart { get; }
-        Task Load(BrewViewModel brewViewModel);
-        ObservableCollection<ChartWithLabel> Charts { get; }
-    }
-
-    public class ChartWithLabel 
-    {
-        public float Value { get; set; }
-        public Chart Chart { get; set; }
-        public string Description { get; set; }
     }
 }

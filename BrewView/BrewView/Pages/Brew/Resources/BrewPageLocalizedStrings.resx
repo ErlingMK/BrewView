@@ -117,7 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Alcohol" xml:space="preserve">
+    <value>Alchohol</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Characteristics" xml:space="preserve">
+    <value>Characteristics</value>
+  </data>
+  <data name="Colour" xml:space="preserve">
+    <value>Colour</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Manufacturer" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoNotes" xml:space="preserve">
+    <value>Add a note!</value>
+  </data>
+  <data name="Odour" xml:space="preserve">
+    <value>Odour</value>
+  </data>
+  <data name="NotePlaceholder" xml:space="preserve">
+    <value>Add a note...</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="NumberOfComments" xml:space="preserve">
+    <value>Number of notes: ({0})</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Taste" xml:space="preserve">
+    <value>Taste</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
   <data name="YourFavorites" xml:space="preserve">
     <value>Your favorites</value>
+  </data>
+  <data name="AverageRating" xml:space="preserve">
+    <value>Avg. rating</value>
+  </data>
+  <data name="RegisteredBuys" xml:space="preserve">
+    <value>Registered purchases:</value>
   </data>
 </root>
